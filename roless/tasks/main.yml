@@ -1,0 +1,38 @@
+---
+- name: test copy
+  copy: src=tttt dest=/tmp/tttt
+  
+  register: cop
+  ignore_errors: yes
+  when: cop.changed
+  tags: filec
+
+- name: test template
+  template: src=trrrr dest=/tmp/trrr
+  register: temp
+  ignore_errors: yes
+  when: temp.changed
+  tags: templ
+
+- name: apache
+  shell: service puppet status 
+  register: s_tatus
+  ignore_errors: yes
+- debug: var=s_tatus.stdout_lines
+- debug: var=s_tatus.stderr_lines
+  notify: restart puppet
+  changed_when: "s_tatus.rc != 0"
+  
+- name: statsus
+  shell: service puppet status
+  register: tt
+  ignore_errors: yes
+  
+  
+- debug: var=tt.stdout
+- debug: var=tt.stdout_lines
+  changed_when: "tt.rc == 0"
+ 
+  
+
+  

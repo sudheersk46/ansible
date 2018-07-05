@@ -1,0 +1,12 @@
+---
+
+ - hosts: ixed-lap0069
+   user: superuser
+  
+   become: yes
+   become_method: sudo
+#   become_user: superuser
+   roles:
+       - role: /home/superuser/ansible/tets/roles/roless
+
+
