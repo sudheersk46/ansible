@@ -1,0 +1,25 @@
+- hosts: env
+  become: yes
+  become_method: sudo
+  become_user: user
+  
+  tasks:
+  
+  - name: network check
+    shell: |
+          service apache2 status >> /tmp/service.txt
+          service nginx status  >> /tmp/service.txt
+
+
+  - name: service check
+
+    service: |
+            name=apache2 state=stopped
+            name=nginx state=stopped
+ 
+
+
+  - name: network check
+    shell: |
+          service apache2 status >> /tmp/service.txt
+          service nginx status  >> /tmp/service.txt
