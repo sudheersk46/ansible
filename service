@@ -1,0 +1,26 @@
+- hosts: env
+  become: yes
+#  become_method: sudo
+#  become_user: user
+#using service wih become  
+
+  tasks:
+  
+  
+
+
+  - name: service check
+    service: name=nginx state=started
+    ignore_errors: yes
+    notify: hello
+    
+    
+    #use -K with become: yes
+   # args:
+#     warn: yes using wth command module
+
+#listen with handlers
+handlers:
+ - name: test
+   command: cat /etc/hosts
+   listen: hello
