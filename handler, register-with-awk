@@ -1,0 +1,41 @@
+---
+
+- hosts: 127.0.0.1
+  become: yes
+  become_method: sudo
+  gather_facts: no
+
+  tasks:
+
+  - name: echo 
+#  - debug: {"msg" :"testinh"}
+    shell: service oracle-xe status | grep -i Active | awk '{print $2}'
+    register: ser
+  - debug: var=ser.stdout
+  - debug:  msg="{{ser.stdout_lines}}"
+
+  - name: make dir
+    shell: echo hello
+    notify: make
+    when: ser.stdout == "active"
+
+  handlers: 
+    -  name: make
+       systemd: name=oracle-xe state=stopped
+
+
+
+
+ 
+     
+- hosts: 127.0.0.1
+  become: yes
+  become_method: sudo
+  gather_facts: no
+  
+  tasks:  
+
+    -  name: service
+       shell: service oracle-xe status | grep -i Active | awk '{print $2}'
+       register: New
+    -  debug:  msg="{{New.stdout_lines}}"
