@@ -1,3 +1,7 @@
 
 https://www.oreilly.com/library/view/ansible-up-and/9781491915318/ch04.html
 http://www.mydailytutorials.com/working-ansible-conditionals-using-clause/
+https://www.renemoser.net/blog/2017/09/02/decoupling-ansible-handlersf
+
+
+module:stat, # check file or folder status
