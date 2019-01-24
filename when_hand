@@ -1,0 +1,25 @@
+---
+
+- hosts: 127.0.0.1
+  become: yes
+  become_method: sudo
+  gather_facts: no
+
+  tasks:
+
+  - name: echo 
+#  - debug: {"msg" :"testinh"}
+    shell: service oracle-xe status | grep -i Active | cut -d ':' -f2
+    register: ser
+  - debug:  msg="{{ser.stdout_lines}}"
+
+  - name: make dir
+    shell: echo hello
+    notify: make
+    when: ser.stdout == " inactive (dead)"
+
+
+  handlers: 
+    -  name: make
+       shell: mkdir -p /tmp/yy
+    
