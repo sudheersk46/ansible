@@ -1,0 +1,68 @@
+
+
+
+
+
+- name: test script
+  shell: " ls -l /etc/NetworkManager/dispatcher.d/ssid | grep -o ssid"
+  register: copys
+  ignore_errors: yes
+- debug: var=copys.stdout
+  
+
+
+
+
+
+- name: copy script
+  copy: src=ssid dest=/tmp/ssid 
+  register: cop
+  ignore_errors: yes
+  when: copys.stdout!="ssid"
+- debug: var=cop
+- debug: {"msg": "copying files"}
+
+#  when: cop.changed
+  tags: filec 
+  
+
+- name: copy 18 script
+  copy: src=ssid dest=/tmp/18_swap_wallpaper
+  register: cop18
+  ignore_errors: yes
+  when: install_check=="install"
+- debug: var=cop18
+- debug: {"msg": "copying files"}
+  tags: file18
+#  when: cop.changed
+  
+
+
+
+- name: run wifi script
+  shell: bash /tmp/ssid
+  register: run
+  ignore_errors: yes
+  when: cop.changed=="true"
+- debug: var=cop.changed
+- debug: msg="{{ run }}"
+  tags: script
+
+- name: run wif script
+  shell: bash /tmp/18_swap_wallpaper
+  register: fdisk
+  ignore_errors: yes
+  when: cop18.changed=="true"  
+- debug: var=cop18.changed
+- debug: msg="{{ fdisk }}"
+- debug: var=facter_os.distro.codename 
+  tags: factss
+
+
+
+#- debug:  msg="{{ ansible_default_ipv4.address,ansible_distribution_version,facter_os.distro.codename,ansible_user_id ,  \     facter_dmi.board.manufacturer, facter_dmi.board.product, facter_dmi.bios.release_date , facter_networking.hostname,  \ facter_memory.system.total, facter_disks.sda.model ,  facter_disks.sda.size }}"
+- include_vars: vars/main.yml
+
+
+
+  
