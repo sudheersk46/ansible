@@ -1,0 +1,35 @@
+---
+- hosts: 127.0.0.1
+  become: yes
+  become_method: sudo
+
+
+
+  vars: 
+   - stat1: kk
+   - stat2: hh
+ 
+  vars_prompt:
+     - name: "company"
+       prompt: "Where do you work"
+       private: no
+
+  tasks:
+     - include_vars: /home/user/tets/roles/wifi/vars/main.yml
+     
+
+
+     - name: test1
+       shell: echo hello
+
+     - name: debug
+       debug: var=stat1
+
+  
+    
+
+     - name: test
+       debug: var=company
+
+     - name: vrs
+       debug: var=tt
