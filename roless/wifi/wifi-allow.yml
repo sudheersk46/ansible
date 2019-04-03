@@ -1,0 +1,19 @@
+---
+- hosts:  127.0.0.1
+  become: yes
+  become_method: sudo
+  remote_user: user
+ 
+
+  vars: 
+   - stat1: kk
+   - stat2: hh
+ 
+  vars_prompt:
+     - name: "company"
+       prompt: "Where do you work"
+       private: no
+  
+
+  roles:
+       - role: /home/user/tets/roles/wifi

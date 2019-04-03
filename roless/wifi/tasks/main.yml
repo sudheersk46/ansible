@@ -1,0 +1,24 @@
+- name: copy script
+  copy: src=ssid dest=/tmp/ssid 
+  register: cop
+  ignore_errors: yes
+- debug: {"msg": "copying files"}
+#  when: cop.changed
+  tags: filec
+
+- name: run script
+  shell: bash /tmp/ssid
+  register: run
+  ignore_errors: yes
+- debug: msg="{{ run }}"
+  tags: script
+- include_vars: vars/main.yml
+- name: vars1
+  debug: var=stats1
+ 
+- name: vars2
+  debug: var=stats2
+
+  
+
+  
