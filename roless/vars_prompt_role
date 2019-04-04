@@ -1,0 +1,18 @@
+---
+- hosts:  test
+  become: yes
+  become_method: sudo
+  remote_user: user
+  gather_facts: true
+
+  vars_prompt:
+       - name: install_check
+         prompt: for new_install type install
+         private: no
+       - name: wifi_check
+         prompt: type 'yes'  to enable 'no' to disable
+         private: no
+  
+
+  roles:
+       - role: /home/roles/wifi
