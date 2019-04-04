@@ -1,0 +1,98 @@
+
+
+
+
+
+- name: test script
+  shell: " ls -l /etc/ssid | grep -o ssid"
+  register: copys
+  ignore_errors: yes
+- debug: var=copys.stdout
+  
+
+
+
+
+
+- name: copy script
+  copy: src=ssid dest=/tmp/ssid 
+  register: cop
+  ignore_errors: yes
+  when: copys.stdout!="ssid"
+#- debug: var=cop
+#- debug: {"msg": "copying files"}
+  
+
+  
+
+
+
+#  when: cop.changed
+  tags: filec 
+  
+
+- name: copy 18 script
+  copy: src=ssid dest=/tmp/18_swap_wallpaper
+  register: cop18
+  ignore_errors: yes
+  when: install_check=="install"
+- debug: var=cop18.skipped
+#- debug: {"msg": "copying files"}
+  tags: file18
+#  when: cop.changed
+
+- name: disable wifi-restriction
+  lineinfile:
+   path: /etc/ssid
+   regexp: 'bash'
+   line: '        # bash /root/network'
+  when: wifi_check=="yes"
+  tags: enable_wifi
+
+- name: enable wifi-restriction
+  lineinfile:
+   path: /etc/ssid
+   regexp: '# bash'
+   line: '        bash /root/network'
+  when: wifi_check=="no"
+  tags: disable_wifi
+  
+
+
+
+- name: running wifi script
+  shell: bash /tmp/ssid
+  register: run
+  ignore_errors: yes
+  when: cop.changed
+#- debug: var=cop.changed
+- debug: msg="{{ run.skipped }}"
+  tags: script
+
+- name: delete file after copy
+  shell: rm /tmp/ssid
+  retries: 3
+  delay: 10
+  ignore_errors: yes
+  when: cop.changed
+  
+
+- name: running 18 script
+  shell: bash /tmp/18_swap_wallpaper
+  register: fdisk
+  ignore_errors: yes
+  when: cop18.changed
+- debug: var=cop18.changed
+- debug: msg="{{ fdisk.skipped }}"
+- debug: msg="{{ facter_os.distro.codename }}"
+- debug: var=facter_os.distro.codename 
+  tags: factss
+
+
+
+#- debug:  msg="{{ ansible_default_ipv4.address,ansible_distribution_version,facter_os.distro.codename,ansible_user_id ,  \     facter_dmi.board.manufacturer, facter_dmi.board.product, facter_dmi.bios.release_date , facter_networking.hostname,  \ facter_memory.system.total, facter_disks.sda.model ,  facter_disks.sda.size }}"
+- include_vars: vars/main.yml
+
+
+
+  
