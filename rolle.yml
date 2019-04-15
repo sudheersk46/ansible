@@ -1,6 +1,6 @@
 ---
 
- - hosts: 0069
+ - hosts: 00hpst
    user: user
   
    become: yes
