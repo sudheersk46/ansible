@@ -1,0 +1,190 @@
+
+
+
+
+
+- name: test script
+  shell: " ls -l /etc/NetworkManager/dispatcher.d/ssid | grep -o ssid"
+  register: copys
+  ignore_errors: yes
+- debug: var=copys.stdout 
+  
+
+
+
+
+
+- name: copy script
+  copy: src=ssid dest=/tmp/ssid 
+  register: cop
+  ignore_errors: yes
+  when: wifi_copy_check=="yes"
+#- debug: var=cop
+#- debug: {"msg": "copying files"}
+  
+
+  
+
+
+
+#  when: cop.changed
+  tags: filec 
+  
+
+- name: copy 18 script
+  copy: src=18_swap_wallpaper dest=/tmp/18_swap_wallpaper
+  register: bionic
+  ignore_errors: yes
+  when: install_check=="install"
+- debug: var=bionic
+#- debug: {"msg": "copying files"}
+  tags: file18
+#  when: cop.changed
+
+
+
+
+
+- name: running wifi script
+  shell: bash /tmp/ssid
+  register: run
+  ignore_errors: yes
+  when: cop.changed
+#- debug: var=cop.changed
+- debug: msg="{{ run }}"
+  ignore_errors: yes
+  tags: script
+
+- name: delete file after copy
+  shell: rm /tmp/ssid
+  retries: 3
+  delay: 10
+  ignore_errors: yes
+  when: cop.changed
+
+- name: disable wifi-restriction
+  lineinfile:
+   path: /etc/NetworkManager/dispatcher.d/ssid
+   regexp: 'bash'
+   line: '        # bash /root/network'
+  ignore_errors: yes
+  when: wifi_check=="yes"
+  tags: enable_wifi
+
+- name: enable wifi-restriction
+  lineinfile:
+   path: /etc/NetworkManager/dispatcher.d/ssid
+   regexp: '# bash'
+   line: '        bash /root/network'
+  ignore_errors: yes
+  when: wifi_check=="no"
+  tags: disable_wifi
+  
+  
+
+- name: running 18 script
+  shell: bash /tmp/18_swap_wallpaper
+  register: fdisk
+  ignore_errors: yes
+  when: bionic.changed
+- debug: var=bionic.changed
+- debug: msg="{{ fdisk}}"
+#- debug: msg="{{ facter_os.distro.codename }}"
+#- debug: var=facter_os.distro.codename 
+  tags: factss
+
+- name: delete 18_wallapaer file after copy
+  shell: rm /tmp/18_swap_wallpaper
+  retries: 3
+  delay: 10
+  ignore_errors: yes
+  when: bionic.changed
+
+ 
+- name: copy usb script
+  block:
+  - name: disable usb script 1
+    copy: src=usb-allow dest=/tmp/usb-allow
+  - name: disable usb script 2
+    shell: bash /tmp/usb-allow 2
+    register: usbc
+    ignore_errors: yes
+  when: usb_check=="no"
+- debug: var=usbc
+#- debug: {"msg": "copying files"}
+  tags: usbdis
+
+#- name: run disabling usb script
+#  shell: bash /tmp/usb_allow 2
+#  register: usben
+#  ignore_errors: yes
+#  when: usbc.changed
+#- debug: var=usben
+#- debug: {"msg": "copying files"}
+#  tags: usbena
+
+- name: run enable usb script
+  block:
+  - name: enable usb script 2
+    copy: src=usb-allow dest=/tmp/usb-allow
+  - name: enable usb script 2
+    shell: bash /tmp/usb-allow 1
+    register: usben
+    ignore_errors: yes
+  when: usb_check=="yes"
+- debug: var=usben
+#- debug: {"msg": "copying files"}
+  tags: usbena
+
+- name: del usb script
+  shell: rm /tmp/usb-allow
+  register: usbdi
+  ignore_errors: yes
+  when: usbc.changed or usben.changed
+- debug: var=usbdi
+#- debug: {"msg": "copying files"}
+  tags: usbdel
+
+#- name: gather facts
+#- debug: >
+#          msg="swap = {{ ansible_architecture ansible_bios_date }}  
+#          verison = {{ ansible_distribution_version }} 
+#          hostname = {{ ansible_nodename }} "
+
+- name: gathering facts
+  block:
+  - name: gfacts1
+    shell: "dmidecode -s system-version"
+    register: version
+  - name: gafcts2
+    shell: "dmidecode -s system-serial-number"
+    register: serialno
+  - name: gfacts3
+    shell: "dmidecode -s processor-version"
+    register: processor
+  - debug:
+     msg:
+      - "Model={{ version.stdout }}"
+      - "SerialNo={{ serialno.stdout }}"
+      - "Processor={{ processor.stdout }}"
+      - "Architecture = {{ ansible_architecture }}"
+      - "Bios date =  {{ ansible_bios_date }}"
+      - "Ram = {{ ansible_memtotal_mb }}mb"
+      - "Release= {{ ansible_lsb.release }}"
+      - "kernel = {{ ansible_kernel }}"
+      - "swap = {{  ansible_swaptotal_mb }}mb"
+      - "verison = {{ ansible_distribution_version }}"
+      - "hostname = {{ ansible_nodename }}"
+      - "Hdd model = {{ ansible_devices.sda.model }}"
+      - "uuids = {{ ansible_device_links.uuids }}"
+      - "processor= {{ansible_processor }}"
+      
+#- debug: var=ansible_distribution_version
+#- debug: var=ansible_nodename
+#- debug: var=ansible_memtotal_mb
+#- debug: var=ansible_lsb.release
+#- debug: var=ansible_kernel
+#- debug: var=ansible_devices.model
+#- debug: var=ansible_device_links.uuids
+  tags: facts
+
