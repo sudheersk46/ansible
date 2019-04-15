@@ -1,0 +1,27 @@
+- name: gathering facts
+  block:
+  - name: gfacts1
+    shell: "dmidecode -s system-version"
+    register: version
+  - name: gafcts2
+    shell: "dmidecode -s system-serial-number"
+    register: serialno
+  - name: gfacts3
+    shell: "dmidecode -s processor-version"
+    register: processor
+  - debug:
+     msg:
+      - "Model={{ version.stdout }}"
+      - "SerialNo={{ serialno.stdout }}"
+      - "Processor={{ processor.stdout }}"
+      - "Architecture = {{ ansible_architecture }}"
+      - "Bios date =  {{ ansible_bios_date }}"
+      - "Ram = {{ ansible_memtotal_mb }}mb"
+      - "Release= {{ ansible_lsb.release }}"
+      - "kernel = {{ ansible_kernel }}"
+      - "swap = {{  ansible_swaptotal_mb }}mb"
+      - "verison = {{ ansible_distribution_version }}"
+      - "hostname = {{ ansible_nodename }}"
+      - "Hdd model = {{ ansible_devices.sda.model }}"
+      - "uuids = {{ ansible_device_links.uuids }}"
+      - "processor= {{ansible_processor }}"
