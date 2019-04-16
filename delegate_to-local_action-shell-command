@@ -1,0 +1,70 @@
+- name: gathering facts
+  block:
+  - name: gfacts1
+    shell: "dmidecode -s system-version"
+    register: version
+  - name: gafcts2
+    shell: "dmidecode -s system-serial-number"
+    register: serialno
+  - name: gfacts3
+    shell: "dmidecode -s processor-version"
+    register: processor
+  - name: gfacfts4
+    shell: "who | head -n 1 | cut -d ' ' -f 1"
+    register: userlog
+  - name: storage
+    shell: "df -h | sort -r | grep -i -A4 size"
+    register: hdds
+  - debug:
+     msg:
+      - "Username={{ userlog.stdout }}"
+      - "Model={{ version.stdout }}"
+      - "SerialNo={{ serialno.stdout }}"
+      - "Processor={{ processor.stdout }}"
+      - "Architecture = {{ ansible_architecture }}"
+      - "Bios date =  {{ ansible_bios_date }}"
+      - "Ram = {{ ansible_memtotal_mb }}mb"
+      - "Release= {{ ansible_lsb.release }}"
+      - "kernel = {{ ansible_kernel }}"
+      - "swap = {{  ansible_swaptotal_mb }}mb"
+      - "verison = {{ ansible_distribution_version }}"
+      - "hostname = {{ ansible_nodename }}"
+      - "Hdd model = {{ ansible_devices.sda.model }}"
+      - "Hdd size = {{ hdds.stdout }}"
+#      - "uuids = {{ ansible_device_links.uuids }}"
+#      - "processor= {{ansible_processor }}"
+#  - name: output facts
+#    shell: |
+#           echo >> /home/ansible-reports 
+#           echo ----date and time--- >> /home/ansible-reports
+#           date >> /home/ansible-reports
+#           echo  Username={{ userlog.stdout }} \
+#           Model={{ version.stdout }} \
+#           SerialNo={{ serialno.stdout }}  \
+#           Architecture={{ ansible_architecture }} \
+#           Bios date= {{ ansible_bios_date }} \
+#           Ram={{ ansible_memtotal_mb }}mb \
+#           Release={{ ansible_lsb.release }} \
+#           kernel={{ ansible_kernel }} \
+#           swap={{  ansible_swaptotal_mb }}mb \
+#           verison={{ ansible_distribution_version }} \
+#           hostname={{ ansible_nodename }} \
+#           Hdd model={{ ansible_devices.sda.model }} >> /home/ansible-reports  
+#           Hdd size={{ hdds.stdout }} 
+#           Processor={{ processor.stdout }}   >> /tmp/role.txt  
+#    ignore_errors: yes
+#    delegate_to: 127.0.0.1
+  - name: local_action
+    local_action:  command  echo dkedke >> /home/ansible-reports 
+#                  command " echo ----date and time--- >> /home/ansible-reports" 
+#                  "command date >> /home/ansible-reports    "
+#                  "command echo  Username={{ userlog.stdout }} \            
+#                   Hdd model={{ ansible_devices.sda.model }} >> /home/ansible-reports "
+#  - name: local_action2
+#    local_action: >
+#                   "shell  echo  >> /home/ansible-reports "
+#                   " shell  echo ----date and time--- >> /home/ansible-reports "
+##                   " shell date >> /home/ansible-reports "
+#                   " shell echo  Username={{ userlog.stdout }} >> /home/ansible-reports  "
+                     
+  tags: facts  
