@@ -1,0 +1,25 @@
+---
+- hosts:  prod
+  become: yes
+  become_method: sudo
+  remote_user: user
+  gather_facts: true
+
+  vars_prompt:
+       - name: install_check
+         prompt: New_Ubuntu_Install type "install18" for 18 
+                 and type "install14" for 14-16 
+         private: no
+       - name: wifi_copy_check
+         prompt: For firtstime_install type 'yes' to copy wifi_script  'no' to skip  
+         private: no
+       - name: wifi_check
+         prompt: For existing_script type 'yes'  to wifi_enable 'no' to wifi_disable  
+         private: no
+       - name: usb_check
+         prompt: Type 'yes'  to usb_enable  'no' to usb_disable
+         private: no
+  
+
+  roles:
+       - role: /home/roles/wifi

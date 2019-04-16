@@ -1,0 +1,32 @@
+#!/bin/bash
+
+echo  -e " checkin usb status "
+usbs=$(sudo ls /root | grep usb | cut -d '-' -f1)
+if [ "$usbs" = usb ] ; then
+echo  " usb disabled"
+else 
+echo "usb enabled"
+fi
+echo
+echo 
+#read -p  " enter 1 to  enable and 2 to disable:" 
+#read usba
+#echo " enter 2 to usb disable:" 
+#read usbb
+
+echo "$1"
+#echo $usbb
+
+if [ "$1" = 1 ] ; then
+
+echo "enabling usb........"
+mv /root/usb-storage.ko /lib/modules/$(uname -r)/kernel/drivers/usb/storage/
+
+modprobe usb-storage
+ 
+elif [ "$1" = 2 ] ; then
+
+echo disabling usb....
+mv /lib/modules/$(uname -r)/kernel/drivers/usb/storage/usb-storage.ko /root/
+rmmod uas usb_storage
+fi

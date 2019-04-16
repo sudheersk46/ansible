@@ -1,0 +1,254 @@
+
+
+
+
+
+- name: checking ssid script 
+  shell: " ls -l /etc/NetworkManager/dispatcher.d/ssid | grep -o ssid"
+  register: copys
+  ignore_errors: yes
+- debug: var=copys.stdout 
+  
+
+
+
+
+
+- name: copy script 
+  copy: src=ssid dest=/tmp/ssid 
+  register: cop
+  ignore_errors: yes
+  when: wifi_copy_check=="yes"
+#- debug: var=cop
+#- debug: {"msg": "copying files"}
+#  when: cop.changed
+  tags: filec 
+  
+- name: running wifi script
+  shell: bash /tmp/ssid
+  register: run
+  ignore_errors: yes
+  when: cop.changed
+#- debug: var=cop.changed
+- debug: msg="{{ run }}"
+  ignore_errors: yes
+  tags: script
+
+- name: delete file after copy
+  shell: rm /tmp/ssid
+  retries: 3
+  delay: 10
+  ignore_errors: yes
+  when: cop.changed
+
+
+
+- name: Disable wifi-restriction
+  lineinfile:
+   path: /etc/NetworkManager/dispatcher.d/ssid
+   regexp: 'bash'
+   line: '        # bash /root/network'
+  ignore_errors: yes
+  when: wifi_check=="yes"
+  tags: enable_wifi
+
+- name: Enable wifi-restriction
+  lineinfile:
+   path: /etc/NetworkManager/dispatcher.d/ssid
+   regexp: '# bash'
+   line: '        bash /root/network'
+  ignore_errors: yes
+  when: wifi_check=="no"
+  tags: disable_wifi
+ 
+
+
+
+- name: copy 14-16 script
+  copy: src=14-16-wallpaper dest=/tmp/14-16-wallpaper
+  register: xenial
+  ignore_errors: yes
+  when: install_check=="install14"
+- debug: var=xenial.stdout
+#- debug: {"msg": "copying files"}
+  tags: file14
+
+- name: running 14-16 script
+  shell: bash /tmp/14-16-wallpaper
+  register: fdisk
+  ignore_errors: yes
+  when: xenial.changed
+- debug: var=xenial.changed.stdout
+- debug: msg=" wallpaper"
+#- debug: msg="{{ facter_os.distro.codename }}"
+#- debug: var=facter_os.distro.codename 
+  tags: 14script
+
+- name: delete 14-16-wallapaer file after copy
+  shell: rm /tmp/14-16-wallpaper
+  retries: 3
+  delay: 10
+  ignore_errors: yes
+  when: xenial.changed 
+  tags: del-14script 
+
+
+
+
+
+- name: copy 18 script
+  copy: src=18_swap_wallpaper dest=/tmp/18_swap_wallpaper
+  register: bionic
+  ignore_errors: yes
+  when: install_check=="install18"
+- debug: var=bionic
+#- debug: {"msg": "copying files"}
+  tags: file18
+#  when: cop.changed  
+
+- name: running 18 script
+  shell: bash /tmp/18_swap_wallpaper
+  register: fdisk
+  ignore_errors: yes
+  when: bionic.changed
+- debug: var=bionic.changed
+- debug: msg="{{ fdisk}}"
+#- debug: msg="{{ facter_os.distro.codename }}"
+#- debug: var=facter_os.distro.codename 
+  tags: factss
+
+- name: delete 18_wallapaer file after copy
+  shell: rm /tmp/18_swap_wallpaper
+  retries: 3
+  delay: 10
+  ignore_errors: yes
+  when: bionic.changed
+  tags: del-18script
+
+
+
+
+
+- name: run disable usb script
+  block:
+  - name: disable usb script 1
+    copy: src=usb-allow dest=/tmp/usb-allow
+  - name: disable usb script 2
+    shell: bash /tmp/usb-allow 2
+    register: usbc
+    ignore_errors: yes
+  when: usb_check=="no"
+- debug: var=usbc
+#- debug: {"msg": "copying files"}
+  tags: usbdis
+
+#- name: run disabling usb script
+#  shell: bash /tmp/usb_allow 2
+#  register: usben
+#  ignore_errors: yes
+#  when: usbc.changed
+#- debug: var=usben
+#- debug: {"msg": "copying files"}
+#  tags: usbena
+
+- name: run enable usb script
+  block:
+  - name: enable usb script 2
+    copy: src=usb-allow dest=/tmp/usb-allow
+  - name: enable usb script 2
+    shell: bash /tmp/usb-allow 1
+    register: usben
+    ignore_errors: yes
+  when: usb_check=="yes"
+- debug: var=usben
+#- debug: {"msg": "copying files"}
+  tags: usbena
+
+- name: del usb script
+  shell: rm /tmp/usb-allow
+  register: usbdi
+  ignore_errors: yes
+  when: usbc.changed or usben.changed
+- debug: var=usbdi
+#- debug: {"msg": "copying files"}
+  tags: usbdel
+
+#- name: gather facts
+#- debug: >
+#          msg="swap = {{ ansible_architecture ansible_bios_date }}  
+#          verison = {{ ansible_distribution_version }} 
+#          hostname = {{ ansible_nodename }} "
+
+- name: gathering facts
+  block:
+  - name: gfacts1
+    shell: "dmidecode -s system-version"
+    register: version
+  - name: gafcts2
+    shell: "dmidecode -s system-serial-number"
+    register: serialno
+  - name: gfacts3
+    shell: "lshw -short | grep -i processor | head -n 1  | awk '{print $3,$4,$5,$6}'"
+    register: processorinfo
+  - name: gfacfts4
+    shell: "who | head -n 1 | cut -d ' ' -f 1"
+    register: userlog
+  - name: storage
+    shell:  "lshw -short | grep -i sda | head -n 1  | awk '{print $4,$5,$6}' "
+    register: hdds
+  - debug:
+     msg:
+      - "Username={{ userlog.stdout }}"
+      - "Model={{ version.stdout }}"
+      - "SerialNo={{ serialno.stdout }}"
+      - "Processor={{ processorinfo.stdout }}"
+      - "Architecture = {{ ansible_architecture }}"
+      - "Bios date =  {{ ansible_bios_date }}"
+      - "Ram = {{ ansible_memtotal_mb }}mb"
+      - "Release= {{ ansible_lsb.release }}"
+      - "kernel = {{ ansible_kernel }}"
+      - "swap = {{  ansible_swaptotal_mb }}mb"
+      - "verison = {{ ansible_distribution_version }}"
+      - "hostname = {{ ansible_nodename }}"
+      - "Hdd model = {{ ansible_devices.sda.model }}"
+      - "Hdd size = {{ hdds.stdout }}"
+#      - "uuids = {{ ansible_device_links.uuids }}"
+#      - "processor= {{ansible_processor }}"
+  - name: output facts
+    shell: |
+           echo >> /home/ansible-reports 
+           echo ----date and time--- >> /home/ansible-reports
+           date >> /home/ansible-reports
+           echo  Username={{ userlog.stdout }} \
+           Model={{ version.stdout }} \
+           SerialNo={{ serialno.stdout }}  \
+           Architecture={{ ansible_architecture }} \
+           Bios date= {{ ansible_bios_date }} \
+           Ram={{ ansible_memtotal_mb }}mb \
+           Release={{ ansible_lsb.release }} \
+           kernel={{ ansible_kernel }} \
+           swap={{  ansible_swaptotal_mb }}mb \
+           verison={{ ansible_distribution_version }} \
+           hostname={{ ansible_nodename }} \
+           Hdd-model={{ ansible_devices.sda.model }} \ 
+           Hdd-size={{ hdds.stdout }} >> /home/ansible-reports 
+#           Processor={{ processorinfo.stdout }}   
+    ignore_errors: yes
+    delegate_to: 127.0.0.1
+#  - name: local_action
+#    local_action:  command  "echo dkedkec >> /home/ansible-reports "
+#                  command " echo ----date and time--- >> /home/ansible-reports" 
+#                  "command date >> /home/ansible-reports    "
+#                  "command echo  Username={{ userlog.stdout }} \            
+#                   Hdd model={{ ansible_devices.sda.model }} >> /home/ansible-reports "
+#  - name: local_action2
+#    local_action: 
+#                   "shell  echo ekmke  >> /home/ansible-reports "
+#                   " shell  echo ----date and time--- >> /home/ansible-reports "
+##                   " shell date >> /home/ansible-reports "
+#                   " shell echo  Username={{ userlog.stdout }} >> /home/ansible-reports  "
+                     
+  tags: facts  
+#- include_vars: vars/main.yml
+
+
