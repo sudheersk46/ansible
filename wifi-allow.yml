@@ -1,11 +1,17 @@
 ---
-- hosts:  prod
+- hosts:  group|ip
   become: yes
   become_method: sudo
   remote_user: user
   gather_facts: true
 
   vars_prompt:
+       - name: getting_hostname
+         prompt: Enter new Hostname
+         private: no
+       - name: set_new_hostname
+         prompt: Enter "yes" to set new hostname
+         private: no
        - name: install_check
          prompt: New_Ubuntu_Install type "install18" for 18 
                  and type "install14" for 14-16 
