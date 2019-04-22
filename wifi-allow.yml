@@ -1,5 +1,5 @@
 ---
-- hosts:  group|ip
+- hosts:  deploy
   become: yes
   become_method: sudo
   remote_user: user
@@ -11,6 +11,9 @@
          private: no
        - name: set_new_hostname
          prompt: Enter "yes" to set new hostname
+         private: no
+       - name: set_swapfile
+         prompt: Enter "yes" to set swapfile
          private: no
        - name: install_check
          prompt: New_Ubuntu_Install type "install18" for 18 
@@ -28,4 +31,4 @@
   
 
   roles:
-       - role: /home/roles/wifi
+       - role: /home/tets/roles/wifi

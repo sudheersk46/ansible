@@ -182,6 +182,19 @@
 #- debug: {"msg": "copying files"}
   tags: usbdel
 
+
+- name: setting-swapfile
+  block:
+   - name: copy swap script
+     copy: src=swapfile dest=/tmp/swapfile
+   - name: applyin script
+     shell: bash /tmp/swapfile 
+#   - wait_for: timeout=200
+   - name: del swapfile script
+     shell: rm /tmp/swapfile
+  when: set_swapfile=="yes"  
+  tags: set-swapfile-script
+
 #- name: gather facts
 #- debug: >
 #          msg="swap = {{ ansible_architecture ansible_bios_date }}  
@@ -230,9 +243,9 @@
 #      - "processor= {{ansible_processor }}"
   - name: output facts
     shell: |
-           echo >> /home/superuser/Documents/ansible-reports 
-           echo ----date and time--- >> /home/superuser/Documents/ansible-reports
-           date >> /home/superuser/Documents/ansible-reports
+           echo >> /home/ansible-reports 
+           echo ----date and time--- >> /home/ansible-reports
+           date >> /home/ansible-reports
            echo  Username={{ userlog.stdout }} \
            Model={{ version.stdout }} \
            SerialNo={{ serialno.stdout }}  \
@@ -245,22 +258,26 @@
            verison={{ ansible_distribution_version }} \
            hostname={{ ansible_nodename }} \
            Hdd-model={{ ansible_devices.sda.model }} \ 
-           Hdd-size={{ hdds.stdout }} >> /home/superuser/Documents/ansible-reports 
+           Hdd-size={{ hdds.stdout }} >> /home/ansible-reports 
 #           Processor={{ processorinfo.stdout }}   
     ignore_errors: yes
     delegate_to: 127.0.0.1
 #  - name: local_action
-#    local_action:  command  "echo dkedkec >> /home/superuser/Documents/ansible-reports "
-#                  command " echo ----date and time--- >> /home/superuser/Documents/ansible-reports" 
-#                  "command date >> /home/superuser/Documents/ansible-reports    "
+#    local_action:  command  "echo dkedkec >> /home/ansible-reports "
+#                  command " echo ----date and time--- >> /home/ansible-reports" 
+#                  "command date >> /home/ansible-reports    "
 #                  "command echo  Username={{ userlog.stdout }} \            
-#                   Hdd model={{ ansible_devices.sda.model }} >> /home/superuser/Documents/ansible-reports "
+#                   Hdd model={{ ansible_devices.sda.model }} >> /home/ansible-reports "
 #  - name: local_action2
 #    local_action: 
-#                   "shell  echo ekmke  >> /home/superuser/Documents/ansible-reports "
-#                   " shell  echo ----date and time--- >> /home/superuser/Documents/ansible-reports "
-##                   " shell date >> /home/superuser/Documents/ansible-reports "
-#                   " shell echo  Username={{ userlog.stdout }} >> /home/superuser/Documents/ansible-reports  "
+#                   "shell  echo ekmke  >> /home/ansible-reports "
+#                   " shell  echo ----date and time--- >> /home/ansible-reports "
+##                   " shell date >> /home/ansible-reports "
+#                   " shell echo  Username={{ userlog.stdout }} >> /home/ansible-reports  "
+
+
+
+
                      
   tags: facts  
 

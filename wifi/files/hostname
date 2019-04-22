@@ -22,5 +22,5 @@ sleep 1
 echo 
 cat /etc/hosts  | head -n 2
 echo      
-
+hostnamectl set-hostname "$1"
 cat /etc/hostname
