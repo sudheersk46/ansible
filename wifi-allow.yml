@@ -28,6 +28,12 @@
        - name: usb_check
          prompt: Type 'yes'  to usb_enable  'no' to usb_disable
          private: no
+       - name: output_gfacts
+         prompt: Enter yes to output facts
+         private: no
+       - name: check_stats
+         prompt: Enter yes to check script status
+         private: no
   
 
   roles:

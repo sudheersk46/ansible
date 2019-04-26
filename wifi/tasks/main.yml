@@ -243,9 +243,9 @@
 #      - "processor= {{ansible_processor }}"
   - name: output facts
     shell: |
-           echo >> /home/ansible-reports 
-           echo ----date and time--- >> /home/ansible-reports
-           date >> /home/ansible-reports
+           echo >> /home/testDocuments/ansible-reports 
+           echo ----date and time--- >> /home/testDocuments/ansible-reports
+           date >> /home/testDocuments/ansible-reports
            echo  Username={{ userlog.stdout }} \
            Model={{ version.stdout }} \
            SerialNo={{ serialno.stdout }}  \
@@ -258,29 +258,56 @@
            verison={{ ansible_distribution_version }} \
            hostname={{ ansible_nodename }} \
            Hdd-model={{ ansible_devices.sda.model }} \ 
-           Hdd-size={{ hdds.stdout }} >> /home/ansible-reports 
+           Hdd-size={{ hdds.stdout }} >> /home/test/Documents/ansible-reports 
+    
 #           Processor={{ processorinfo.stdout }}   
     ignore_errors: yes
     delegate_to: 127.0.0.1
 #  - name: local_action
-#    local_action:  command  "echo dkedkec >> /home/ansible-reports "
-#                  command " echo ----date and time--- >> /home/ansible-reports" 
-#                  "command date >> /home/ansible-reports    "
+#    local_action:  command  "echo dkedkec >> /home/testDocuments/ansible-reports "
+#                  command " echo ----date and time--- >> /home/testDocuments/ansible-reports" 
+#                  "command date >> /home/testDocuments/ansible-reports    "
 #                  "command echo  Username={{ userlog.stdout }} \            
-#                   Hdd model={{ ansible_devices.sda.model }} >> /home/ansible-reports "
+#                   Hdd model={{ ansible_devices.sda.model }} >> /home/testDocuments/ansible-reports "
 #  - name: local_action2
 #    local_action: 
-#                   "shell  echo ekmke  >> /home/ansible-reports "
-#                   " shell  echo ----date and time--- >> /home/ansible-reports "
-##                   " shell date >> /home/ansible-reports "
-#                   " shell echo  Username={{ userlog.stdout }} >> /home/ansible-reports  "
+#                   "shell  echo ekmke  >> /home/testDocuments/ansible-reports "
+#                   " shell  echo ----date and time--- >> /home/testDocuments/ansible-reports "
+##                   " shell date >> /home/testDocuments/ansible-reports "
+#                   " shell echo  Username={{ userlog.stdout }} >> /home/testDocuments/ansible-reports  "
 
 
 
 
-                     
+  when: output_gfacts=="yes"                   
   tags: facts  
 
+
+- name: check scripts application status
+  block:
+  - name: check usb stat
+    shell: "ls /root/ | grep -o usb-storage"
+    ignore_errors: yes
+    register: usb_stat
+  - name: check wifi stat
+    shell: "ls /etc/NetworkManager/dispatcher.d/ | grep -o ssid "
+    ignore_errors: yes
+    register: wifi_stat
+#  - name: debug-enable-status
+  - debug: msg="usb enabled"
+    when: usb_stat.stdout==""
+#  - name: debug-disable-status
+  - debug: msg="usb disabled"
+    when: usb_stat.stdout=="usb-storage"
+#  - name: wifi-enable-status
+  - debug: msg="wifi enabled"
+    when: wifi_stat.stdout==""
+#  - name: wifi-disable-status
+  - debug: msg="wifi disabled"
+    when: wifi_stat.stdout=="ssid"
+#  - debug: var=usb_stat.stdout
+#  - debug: var=wifi_stat.stdout
+  when: check_stats=="yes" 
 
                
 #- debug: var=ansible_distribution_version
@@ -312,7 +339,7 @@
 #      - "hostname = {{ ansible_nodename }}"
 #      - "Hdd model = {{ ansible_devices.sda.model }}"
 #      - "Hdd size = {{ hdds.stdout }}"
-#         >> /home/superuser/ansible/ping.txt"
+#         >> /home/testansible/ping.txt"
 
 
 
