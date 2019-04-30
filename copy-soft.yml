@@ -1,0 +1,15 @@
+---
+- hosts: soft-rem
+  become: yes
+  become_method: sudo
+  remote_user: user
+  gather_facts: true
+
+  vars_prompt:
+       - name: check_copy_file
+         prompt: Enter yes to allow
+         private: no
+       
+
+  roles:
+    - role: /home/tets/roles/soft

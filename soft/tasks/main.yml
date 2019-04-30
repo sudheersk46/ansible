@@ -1,0 +1,62 @@
+
+
+- name: copying file
+  copy: src="{{ item }}"  dest=/tmp/
+  ignore_errors: yes
+#  with_items:
+#   - SoapUI-x64-5.4.0.sh
+#   - App*
+  with_fileglob:
+    - "/home/soft/files/*"
+  tags: copy_files
+
+- name: copying notepad
+  block: 
+  - name: mkdir
+    shell: mkdir -p /tmp/softs
+  - name: install notepad
+    copy: src="{{ item }}"  dest=/tmp/softs
+    ignore_errors: yes
+#  with_items:
+#   - SoapUI-x64-5.4.0.sh
+#   - App*
+    with_fileglob:
+     - "/home/tets/roles/soft/files/notepad/*"
+    register: copyf
+  
+  - name: installing notepad
+    shell: | 
+             dpkg -i /tmp/softs/notepadqq-common_1.2.0-1~trusty1_all.deb   
+             dpkg -i /tmp/softs/notepadqq_1.2.0-1~trusty1_amd64.deb
+             apt-get install -f
+
+
+  - name: del files
+    shell: rm -rf /tmp/softs
+    when: copyf.changed 
+  tags: notepad  
+  
+- name: copying chrome
+  block: 
+  - name: mkdir
+    shell: mkdir -p /tmp/softs
+  - name: install chrome
+    copy: src="{{ item }}"  dest=/tmp/softs
+    ignore_errors: yes
+#  with_items:
+#   - SoapUI-x64-5.4.0.sh
+#   - App*
+    with_fileglob:
+     - "/home/tets/roles/soft/files/chrome/*"
+    register: chromef
+  
+  - name: installing chrome
+    shell: |  
+             dpkg -i /tmp/softs/google-chrome* 
+             apt-get install -f 
+  - name: del files
+    shell: rm -rf /tmp/softs
+    when: chromef.changed 
+  tags: chrome   
+
+  when: check_copy_file=="yes"
