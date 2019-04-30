@@ -10,6 +10,32 @@
     - "/home/soft/files/*"
   tags: copy_files
 
+- name: copying director
+  copy: src=chrome  dest=/tmp/chrome 
+  ignore_errors: yes
+#  with_items:
+#   - SoapUI-x64-5.4.0.sh
+#   - App*
+#  with_fileglob:
+#    - "/home/soft/files/*"
+  tags: copy_dir
+
+- name: synchronize director
+  synchronize: 
+        src: chrome  
+        dest: /tmp 
+        recursive: yes
+  ignore_errors: yes
+  
+#  archive: yes
+#  rsync_opts
+#  rsync_path
+#  set_remote_user
+#  with_fileglob:
+#    - "/home/soft/files/*"
+  tags: sync_dir
+
+
 - name: copying notepad
   block: 
   - name: mkdir
