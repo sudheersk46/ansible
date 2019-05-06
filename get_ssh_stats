@@ -1,0 +1,14 @@
+while read file; do  if [[ `ping -c 2 $file 2> /dev/null ` ]] ; then  echo  $file  issuccess && echo checking ssh stats && nmap $file -PN -p ssh | egrep 'open|closed|filtered' ; else echo $file is failure && nmap $file -PN -p ssh | egrep 'open|closed|filtered'; fi ; done < '/home/scripts/new_wifi'
+
+
+while read file; do  if [[ `ping -c 2 $file 2>/dev/null` ]] ; then  echo $file is  success && echo checking ssh stats && nmap $file -PN -p ssh | egrep 'open|closed|filtered' &&  echo  $file >> /home/scripts/hostss_working ; else echo $file is failure && nmap $file -PN -p ssh | egrep 'open|closed|filtered' && echo $file >> /home/scripts/hostss_failure; fi ; done < '/home/scripts/hostss'
+
+
+creates 3  file for working , failure and ssh
+while read file; do  if [[ `ping -c 2 $file 2>/dev/null` ]] ; then  echo $file is  success && echo "$file"  >> hostss_working && echo "$file" >> host_ssh_stat  &&  echo checking ssh stats for $file && nmap $file -PN -p ssh | egrep 'open|closed|filtered' | tee  -a host_ssh_stat  ; else echo $file  is failure && echo "$file" >> hostss_failure ; fi ; done < hostss
+
+
+#nmap $file -PN -p ssh | egrep 'open|closed|filtered'
+
+
+
