@@ -1,0 +1,4 @@
+grep -f file1 file2
+diff file2 file1
+comm  -1 -3 <(sort ubuntu_host.csv) <(sort getent_host_list.csv)
+comm  -3 <(sort ubuntu_host.csv) <(sort getent_host_list.csv)

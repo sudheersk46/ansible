@@ -1,0 +1,28 @@
+###convert to csv
+soffice --headless --convert-to csv file --outdir /tmp 
+libreoffoce --headless --convert-to csv file --outdir /tmp 
+
+##getting hostnames from report 
+
+cat '/new_host_list.csv'    | awk -F ',' '{print $2}' | egrep -i 'hostpattern-' | sed 's/$/.local/' | tee /tmp/ubuntu_host.csv
+
+
+##checking host connectuvity 
+
+while read file; do  if [[ `ping -c 2 $file 2> /dev/null ` ]] ; then  echo  $file  issuccess && echo $file >> /tmp/successhosts ; else echo $file is failure && echo $file >> /tmp/failurehosts  ; fi ; done < /tmp/hostlist
+
+
+##check ssh staus of working host csv 
+
+while read file; do  if [[ `ping -c 2 $file 2>/dev/null` ]] ; then  echo $file is  success && echo "$file"  >> /tmp/uhostss_working && echo "$file" >> /tmp/uhost_ssh_stat  &&  echo checking ssh stats for $file && nmap $file -PN -p ssh | egrep 'open|closed|filtered' | tee  -a /tmp/uhost_ssh_stat  ; else echo $file  is failure && echo "$file" >> /tmp/uhostss_failure ; fi ; done < /tmp/successhosts
+
+##check open ssh staus from report  along with hostanme
+
+cat uhost_ssh_stat | grep -A2  'open' 
+
+###list hostname for open ssh stat
+cat uhost_ssh_stat | grep -A2  'open' | grep -i 'string'
+
+####ansible report to csv 
+
+cat ansible-reports | grep -i 'ixed' | awk  -F= '{print $2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15}' | awk -F' ' '{print $1,$4,$6,$8,$11,$13,$15,$17,$19,$23,$27,$28,$25}' | sort -u | uniq  -f10 >> /tmp/report.csv

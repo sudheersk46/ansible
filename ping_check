@@ -1,1 +1,0 @@
-while read file; do  if [[ `ping -c 2 $file 2> /dev/null ` ]] ; then  echo  $file  issuccess ; else echo $file is failure; fi ; done < '/home/scripts/new_wifi'
