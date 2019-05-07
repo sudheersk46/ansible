@@ -14,6 +14,8 @@ while read file; do  if [[ `ping -c 2 $file 2> /dev/null ` ]] ; then  echo  $fil
 
 ##check ssh staus of working host csv 
 
+nmap -A -iL ssh_check_for_hosts  -p T:22
+
 while read file; do  if [[ `ping -c 2 $file 2>/dev/null` ]] ; then  echo $file is  success && echo "$file"  >> /tmp/uhostss_working && echo "$file" >> /tmp/uhost_ssh_stat  &&  echo checking ssh stats for $file && nmap $file -PN -p ssh | egrep 'open|closed|filtered' | tee  -a /tmp/uhost_ssh_stat  ; else echo $file  is failure && echo "$file" >> /tmp/uhostss_failure ; fi ; done < /tmp/successhosts
 
 ##check open ssh staus from report  along with hostanme
