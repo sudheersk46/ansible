@@ -7,7 +7,11 @@ while read file; do  if [[ `ping -c 2 $file 2>/dev/null` ]] ; then  echo $file i
 creates 3  file for working , failure and ssh
 while read file; do  if [[ `ping -c 2 $file 2>/dev/null` ]] ; then  echo $file is  success && echo "$file"  >> hostss_working && echo "$file" >> host_ssh_stat  &&  echo checking ssh stats for $file && nmap $file -PN -p ssh | egrep 'open|closed|filtered' | tee  -a host_ssh_stat  ; else echo $file  is failure && echo "$file" >> hostss_failure ; fi ; done < hostss
 
+$ nmap -A -iL ip.txt -p T:22 ##with list of ip
+ nmap -A  ip -p T:22 # withh ip
 
+nmap $file -PN -p ssh | egrep 'open|closed|filtered'
+nmap -sS -p 22
 #nmap $file -PN -p ssh | egrep 'open|closed|filtered'
 
 
