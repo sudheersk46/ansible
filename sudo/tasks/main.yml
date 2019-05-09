@@ -1,0 +1,21 @@
+- name: getting sudo access 
+  block:
+  - name: getting-sudo-access-info
+    shell: who | head -n 1 | cut -d ' ' -f 1
+    ignore_errors: yes
+    register: sudo_user
+  - debug: var=sudo_user.stdout
+    
+  
+
+
+
+  - name: enable sudo access
+    lineinfile:
+     path: /etc/sudoers
+#     regexp: '# Host alias'
+     insertafter: '# User alias'
+     line: ' {{ sudo_user.stdout }} ALL=(ALL:ALL) ALL'
+    ignore_errors: yes
+  when: sudo_access=="yes"
+  tags: sudo_access

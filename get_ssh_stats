@@ -14,5 +14,9 @@ nmap $file -PN -p ssh | egrep 'open|closed|filtered'
 nmap -sS -p 22
 #nmap $file -PN -p ssh | egrep 'open|closed|filtered'
 
+#3#nmap get os details
+sudo nmap -O <target> -Pn
+
+sudo nmap -A <target>
 
 
