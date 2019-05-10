@@ -1,5 +1,6 @@
 
 
+
 - name: copying file
   copy: src="{{ item }}"  dest=/tmp/
   ignore_errors: yes
@@ -36,6 +37,7 @@
   tags: sync_dir
 
 
+
 - name: copying notepad
   block: 
   - name: mkdir
@@ -47,14 +49,14 @@
 #   - SoapUI-x64-5.4.0.sh
 #   - App*
     with_fileglob:
-     - "/home/tets/roles/soft/files/notepad/*"
+     - "/home//tets/roles/soft/files/notepad/*"
     register: copyf
   
   - name: installing notepad
     shell: | 
              dpkg -i /tmp/softs/notepadqq-common_1.2.0-1~trusty1_all.deb   
              dpkg -i /tmp/softs/notepadqq_1.2.0-1~trusty1_amd64.deb
-             apt-get install -f
+             apt-get install -f -y
 
 
   - name: del files
@@ -73,16 +75,48 @@
 #   - SoapUI-x64-5.4.0.sh
 #   - App*
     with_fileglob:
-     - "/home/tets/roles/soft/files/chrome/*"
+     - "/home//tets/roles/soft/files/chrome/*"
     register: chromef
   
   - name: installing chrome
     shell: |  
              dpkg -i /tmp/softs/google-chrome* 
-             apt-get install -f 
+             apt-get install -f -y 
   - name: del files
     shell: rm -rf /tmp/softs
     when: chromef.changed 
   tags: chrome   
+
+  
+- name: copying citrix
+  block: 
+  - name: mkdir
+    shell: mkdir -p /tmp/softs
+  - name: install citrix
+    copy: src="{{ item }}"  dest=/tmp/softs
+    ignore_errors: yes
+#  with_items:
+#   - SoapUI-x64-5.4.0.sh
+#   - App*
+    with_fileglob:
+     - "/home//tets/roles/soft/files/citrix/*"
+    register: citrixf
+  
+  - name: installing citrix
+    shell: |  
+             dpkg -i /tmp/softs/icaclient_13.10.0.20_amd64.deb
+             apt-get install -f  -y
+             bash /tmp/citrix1
+             bash /tmp/citrix
+  - name: del files
+    shell: rm -rf /tmp/softs
+    when: citrixf.changed 
+  tags: citrix
+
+
+
+
+
+
 
   when: check_copy_file=="yes"
