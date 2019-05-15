@@ -1,0 +1,19 @@
+apt-get install python-winrm
+apt-get install python3-winrm
+
+on wwinowd 
+
+
+winrm quickconfig
+winrm set winrm/config/client @{Trustedhosts="ip1","ip2"}
+winrm set winrm/config/service/auth @{Basic="True"}
+
+
+
+import winrm
+s=winrm.Session("http://192.168.6.102:5985",auth=("administrator","p@ssw0rd"),transport="ntlm")
+>>> r = s.run_cmd('ipconfig')
+r = s.run_ps('ipconfig')## run powershell
+>>> r = s.run_cmd('sc query wuauserv')
+>>> print r.std_out
+
