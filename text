@@ -1,0 +1,41 @@
+https://docs.vmware.com/en/vRealize-Automation/7.5/com.vmware.vrealize.orchestrator-use-plugins.doc/GUID-D4ACA4EF-D018-448A-866A-DECDDA5CC3C1.html
+
+
+    Run the following command to set the default WinRM configuration values.
+
+    c:\> winrm quickconfig
+    (Optional) Run the following command to check whether a listener is running, and verify the default ports.
+
+    c:\> winrm e winrm/config/listener
+
+    The default ports are 5985 for HTTP, and 5986 for HTTPS.
+    Enable basic authentication on the WinRM service.
+        Run the following command to check whether basic authentication is allowed.
+
+        c:\> winrm get winrm/config/service
+        Run the following command to enable basic authentication.
+
+        c:\> winrm set winrm/config/service/auth @{Basic="true"}
+    Run the following command to allow transfer of unencrypted data on the WinRM service.
+
+    c:\> winrm set winrm/config/service @{AllowUnencrypted="true"}
+    If the channel binding token hardening level of the WinRM service is set to strict, change its value to relaxed.
+
+    c:\> winrm set winrm/config/service/auth @{CbtHardeningLevel="relaxed"}
+    Enable basic authentication on the WinRM client.
+        Run the following command to check whether basic authentication is allowed.
+
+        c:\> winrm get winrm/config/client
+        Run the following command to enable basic authentication.
+
+        c:\> winrm set winrm/config/client/auth @{Basic="true"}
+    Run the following command to allow transfer of unencrypted data on the WinRM client.
+
+    c:\> winrm set winrm/config/client @{AllowUnencrypted="true"}
+    If the WinRM host machine is in an external domain, run the following command to specify the trusted hosts.
+
+    c:\> winrm set winrm/config/client @{TrustedHosts="host1, host2, host3"}
+    Run the following command to test the connection to the WinRM service.
+
+    c:\> winrm identify -r:http://winrm_server:5985 -auth:basic -u:user_name -p:password -encoding:utf-8
+
