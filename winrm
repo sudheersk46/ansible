@@ -39,3 +39,10 @@ https://docs.vmware.com/en/vRealize-Automation/7.5/com.vmware.vrealize.orchestra
 
     c:\> winrm identify -r:http://winrm_server:5985 -auth:basic -u:user_name -p:password -encoding:utf-8
 
+
+access with winrs 
+
+winrs -r http://ip:5985 -u:username cmd.exe 
+winrs -r https://ip:5986 -u:username cmd.exe -auth:basic 
+
+
