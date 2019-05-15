@@ -17,3 +17,18 @@ r = s.run_ps('ipconfig')## run powershell
 >>> r = s.run_cmd('sc query wuauserv')
 >>> print r.std_out
 
+
+
+##anisble host file 
+
+[win]
+192.168.6.102
+
+
+[win:vars]
+ansible_user=hostname\administrator
+ansible_password=password
+ansible_connection=winrm
+ansible_winrm_scheme=http#
+ansible_winrm_port=5985#comment both if https is used
+ansible_winrm_server_cert_validation=ignore
