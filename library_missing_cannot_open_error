@@ -3,3 +3,8 @@
 /usr/lib/apt/methods/http cannot load libidn2.so.12 
 
 /sbin/ldconfig -v # check for libraries 
+
+
+###ubuntu package analser tool
+
+ lintian - Static analysis tool for Debian packages
