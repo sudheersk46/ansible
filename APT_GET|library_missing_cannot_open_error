@@ -4,7 +4,24 @@
 
 /sbin/ldconfig -v # check for libraries 
 
+##working fix
+mount /dev/sda2 /mnt# mount error giving hdd
 
+copy libidn2.so.3.3.0 # error giving library from live cd
+
+
+
+chroot 
+cd /usr/lib/x86x64gnu
+ln -s libidn2.so.3.3.0 libidn.so.0
+
+ls -ll libindn.so.0 @ check symlink is prper or not
+
+
+apt-get update
+apt-get install -f
+
+apt-get install ubuntu-desktop##install all missing packages
 
 ###
 
