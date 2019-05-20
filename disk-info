@@ -11,15 +11,15 @@ sfdick
 blkid# get uuid
 lsblk# list mouunt partition
 lvm#
-
+################clone partition or drive on linux######################
 ################copy parttion with dd ## node dd wil copy uuid also##########
 
 
-mkfs.ext3 /dev/sda3
-e2fsck -fy /dev/sda3
+mkfs.ext3 /dev/sda2
+e2fsck -fy /dev/sda2
 dd if=/dev/sda1 of-/dev/sda2 status=progress
 
-e2fsck -fy /dev/sda3
+e2fsck -fy /dev/sda2
 
 resize2fs /dev/sda2
 
@@ -49,17 +49,21 @@ set 3 boot on# set as bootable partition
 
 
 update grub 
-sudo mount  -o rw /dev/sdb4 /mnt
-sudo grub-install --root-directory=/mnt /dev/sdb
+sudo mount  -o rw /dev/sda2 /mnt
+sudo grub-install --root-directory=/mnt /dev/sda
+
+##optional if grub prompt appeats
+ls
 root (hd1,3) # 3 is 4 - 1
 setup (hd1) # 1 is 2 for sdb - 1
 quit
+#############
 sudo update-grub
 reboot
 update-grub## update grun for new partition
 
 https://forums.linuxmint.com/viewtopic.php?t=40992
-#############END###########################################################
+#######################################END###########################################################
 tune2fs # adjust  tunable  filesystem  parameters  on  ext2/ext3/ext4
        filesystems
 
