@@ -290,9 +290,17 @@
     ignore_errors: yes
     register: usb_stat
   - name: check wifi stat
-    shell: "ls /etc/NetworkManager/dispatcher.d/ | grep -o ssid "
+    shell: "cat /etc/NetworkManager/dispatcher.d/ssid | grep -o '# bash'"
     ignore_errors: yes
     register: wifi_stat
+  - name: check wifi stat1
+    shell: "ls /etc/NetworkManager/dispatcher.d/ssid | grep -o 'ssid'"
+    ignore_errors: yes
+    register: wifi_stat_1
+  - name: print wifi  file check
+    debug: msg="Wifi policy not installed"
+    ignore_errors: yes
+    when: wifi_stat_1.stdout==""
 #  - name: debug-enable-status
   - debug: msg="usb enabled"
     when: usb_stat.stdout==""
@@ -300,14 +308,15 @@
   - debug: msg="usb disabled"
     when: usb_stat.stdout=="usb-storage"
 #  - name: wifi-enable-status
+#  - debug: var=wifi_stat.stdout
   - debug: msg="wifi enabled"
-    when: wifi_stat.stdout==""
+    when: wifi_stat.stdout=="# bash" or wifi_stat_1.stdout=="" 
 #  - name: wifi-disable-status
   - debug: msg="wifi disabled"
-    when: wifi_stat.stdout=="ssid"
+    when: wifi_stat.stdout=="" and wifi_stat_1.stdout=="ssid"
 #  - debug: var=usb_stat.stdout
 #  - debug: var=wifi_stat.stdout
-  when: check_stats=="yes" 
+  when: check_stats=="yes"  
 
                
 #- debug: var=ansible_distribution_version
