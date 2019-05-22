@@ -1,0 +1,6 @@
+sudo env VMWARE_KEEP_CONFIG=yes|no sh  './VMware-Horizon-Client-4.6.0-6617224.x64.bundle' -u vmware-horizon-client
+
+##list component to unistall 
+
+sudo env VMWARE_KEEP_CONFIG=yes|no sh  './VMware-Horizon-Client-4.6.0-6617224.x64.bundle' -l ##list unistall agent name
+sudo env VMWARE_KEEP_CONFIG=yes|no  sh  './VMware-Horizon-Client-4.6.0-6617224.x64.bundle' -t ##list components

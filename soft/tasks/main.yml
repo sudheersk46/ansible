@@ -113,7 +113,28 @@
     when: citrixf.changed 
   tags: citrix
 
-
+- name: copying horizon
+  block: 
+  - name: mkdir
+    shell: mkdir -p /tmp/softs
+  - name: install horizon
+    copy: src="{{ item }}"  dest=/tmp/softs
+    ignore_errors: yes
+#  with_items:
+#   - SoapUI-x64-5.4.0.sh
+#   - App*
+    with_fileglob:
+     - "/home/tets/roles/soft/files/VMware-Horizon-Client-4.6.0-6617224.x64.bundle"
+    register: horizonf
+  
+  - name: installing horizon
+    shell: |  
+             sh '/tmp/VMware-Horizon-Client-4.6.0-6617224.x64.bundle' --console --eulas-agreed --required
+             
+  - name: del files
+    shell: rm -rf /tmp/softs
+    when: horizonf.changed 
+  tags: horizon
 
 
 
