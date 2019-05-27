@@ -1,0 +1,200 @@
+$ dpkg-query -S '/bin/ls'
+$ dpkg-query -S 'passwd*'
+$ dpkg-query --search '/path/to/file'
+$ dpkg-query --search '/usr/bin/passwd'
+$ dpkg-query --search '/etc/passwd'
+
+dpkg -S /bin/ls { binary} get package name
+dpkg-quesry -S /etc/apache2/apache2.conf
+dpkg -S /etc/sssd
+dpkg -L coreutils { get all confifyrations file}
+dpkg -l
+dpkg -s
+
+
+apt-cache show|policy|search package
+apt-cache depends|rdepends|showpkg package
+apt-cache policy pacakgae | check available version for package
+
+apt-get install -s google-chrome-stable # check new version of package 
+
+whereis /bin/ls
+which /bin
+grep 'passwd' /var/lib/dpkg/info/*.postinst## egt package and package filedetails
+ 
+
+##fro unstated intalls
+apt-get install debconf-utils
+debconf-apt-progress
+debconf-get-selections
+debconf-set-selections
+debconf-show
+
+##
+
+
+##upgrades
+unattended-upgarde
+unattended-upgardes
+
+
+##starce debconf-get-selections
+
+strace ls
+strace df-h
+
+
+##logs
+
+/var/log/ssylog
+/log/auth.log
+/log/kern.log
+
+
+dmesg
+joranctl -xe
+systemd list-dependencies| set-environment|halt}reboot|is-system=running|is-enabled|is-running
+systemd-analyze
+systemd-run
+systemd-notify
+systemd-resolve
+##resolve
+resolvip
+resolvconf
+
+##avahi-daemon##mdns 
+avahi-daemon -ar | show all resolved daemons
+
+#dns files
+
+/etc/resolve.conf
+/etc/nssswitch# caching for passwd, hosts, groups, ect
+
+##package
+
+apt-get install resolvconf
+
+
+
+
+#####redhat
+
+
+
+
+yum list 
+yum provides
+yum whatprovides
+
+yum list installed
+
+rpm -qa
+rm -qf file ##list package
+
+	
+
+Description
+
+yum repolist
+	
+
+Lists all enabled repositories.
+
+yum list
+	
+
+Lists all packages that are available in all enabled repositories and all packages that are installed on your system.
+
+yum list installed
+	
+
+Lists all packages that are installed on your system.
+
+yum list available
+	
+
+Lists all packages that are available to be installed in all enabled repositories.
+
+yum search string
+	
+
+Searches the package descriptions for the specified string.
+
+yum provides feature
+	
+
+Finds the name of the package to which the specified file or feature belongs. For example:
+
+yum provides /etc/sysconfig/atd
+
+yum info package
+	
+
+Displays detailed information about a package. For example:
+
+yum info bind
+
+yum install package
+	
+
+Installs the specified package, including packages on which it depends. For example:
+
+yum install ocfs2-tools
+
+yum check-update
+	
+
+Checks whether updates exist for packages that are already installed on your system.
+
+yum update package
+	
+
+Updates the specified package, including packages on which it depends. For example:
+
+yum upgrade nfs-utils
+
+yum update
+	
+
+Updates all packages, including packages on which they depend.
+
+yum remove package
+	
+
+Removes the specified package. For example:
+
+yum erase nfs-utils
+
+yum erase package
+	
+
+Removes the specified package. This command has the same effect as the yum remove command.
+
+yum update
+	
+
+Updates all packages, including packages on which they depend.
+
+yum clean all
+	
+
+Removes all cached package downloads and cached headers that contain information about remote packages. Running this command can help to clear problems that can result from unfinished transactions or out-of-date headers.
+
+yum help
+	
+
+Displays help about yum usage.
+
+yum help command
+	
+
+Displays help about the specified yum command. For example:
+
+yum help upgrade
+
+yum shell 
+
+
+
+
+
