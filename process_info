@@ -1,0 +1,10 @@
+ps -auxf | grep firefox
+
+pidof firefox
+pidstat -p pid
+pmap pid | head -1
+
+ls -la /proc/pid/exe
+
+cat /proc/pid/cmdline
+ ps -eo pid,lstart,cmd
