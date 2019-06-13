@@ -4,6 +4,7 @@
 
 /sbin/ldconfig -v # check for libraries 
 
+##boot with live cd/dvd
 ##working fix
 mount /dev/sda2 /mnt# mount error giving hdd
 

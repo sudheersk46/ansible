@@ -20,7 +20,7 @@ apt-get install -s google-chrome-stable # check new version of package
 
 whereis /bin/ls
 which /bin
-grep 'passwd' /var/lib/dpkg/info/*.postinst## egt package and package filedetails
+grep 'passwd' /var/lib/dpkg/info/*.postinst## get package and package filedetails
  
 
 ##fro unstated intalls
