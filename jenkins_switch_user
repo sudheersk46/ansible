@@ -1,0 +1,16 @@
+echo myPassword | sudo -S su - hduser -c "bash /usr/local/hadoop/sbin/start-dfs.sh" ### logged i use rin ssyem shoudld be sudo user and password for loggend in sudo user is provdied in sciprt
+
+or
+
+sudo su
+
+runuser -l usrnmae -c 'cmd'
+
+or
+sudo su
+su username
+
+or 
+install sshpass
+
+ssh username@ip -c 'cmd'
