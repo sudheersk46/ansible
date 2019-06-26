@@ -9,7 +9,9 @@ winrm set winrm/config/client @{Trustedhosts="ip1","ip2"}
 winrm set winrm/config/service/auth @{Basic="True"}
 
 
-working only when builtin user administrator user and pass is used
+working only when builtin user administrator user and pass is used or add user to winfowd 'remote management user'
+
+net localgroup 'remote mangement users' /add user
 
 
 import winrm
