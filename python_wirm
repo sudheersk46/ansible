@@ -1,13 +1,15 @@
 apt-get install python-winrm
 apt-get install python3-winrm
 
-on wwinowd 
+on wwinows
 
 
 winrm quickconfig
 winrm set winrm/config/client @{Trustedhosts="ip1","ip2"}
 winrm set winrm/config/service/auth @{Basic="True"}
 
+
+working only when builtin user administrator user and pass is used
 
 
 import winrm
