@@ -1,8 +1,0 @@
-mkdir -p /var/cache/swap
-dd if=/dev/zero of=/var/cache/swap/swapfile bs=1M count=10240
-mkswap /var/cache/swap/swapfile
-swapon /var/cache/swap/swapfile
-
-sed -i.bak '/ext4/a /var/cache/swap/swapfile none swap sw 0 0'  /etc/fstab
-
-swapon -s

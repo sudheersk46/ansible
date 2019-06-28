@@ -1,1 +1,0 @@
-getent passwd | grep -i string | cut -d ':' -f5 | sort | uniq | grep -Ei 'desk|lap' | sed 's/$/.local/' | tee /tmp/working-hosts
