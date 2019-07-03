@@ -1,0 +1,22 @@
+vault server -dev ## start in dev mode
+
+secrets## for crednetials/username-password
+
+policy## for user related permission
+group## attch policy and entities
+entities# creating user and aliases
+
+edit policy ##example
+
+
+
+set password to user with below cmd
+
+
+vault write -address="http://127.0.0.1:8200"  auth/userpass/users/sk password="passw" 
+or
+vault write   auth/userpass/users/sk password="pass"
+
+link for cmds
+
+https://www.vaultproject.io/docs/commands/
