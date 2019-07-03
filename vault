@@ -8,7 +8,15 @@ entities# creating user and aliases
 
 edit policy ##example
 
+# Allow tokens to look up their own properties
+path "secrets" {
+    capabilities = ["read", "list"]
+}
 
+# Allow tokens to renew themselves
+path "secrets/mysql" {
+    capabilities = ["read", "list"]
+}
 
 set password to user with below cmd
 
