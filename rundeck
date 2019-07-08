@@ -1,0 +1,15 @@
+https://docs.rundeck.com/docs/administration/install/launcher.html
+
+create variable 
+
+RDECK_BASE
+export RDECK_BASE=/home/rundeck
+export PATH=$PATH:$RDECK_BASE/tools/bin
+export MANPATH=$MANPATH:$RDECK_BASE/docs/man
+
+##run from war java -Xmx3g -jar $RDECK_BASE/rundeck.war
+
+
+##node creation from xml
+
+project> <node name="testwinpc" connectionType="WINRM_NATIVE" node-executor="overthere-winrm" winrm-password-option="pass" winrm-protocol="http" winrm-auth-type="basic" username="admin" winrmPassword="password" description="Windows node" tags="" hostname="ip:5985" osArch="x86_64" osFamily="windows" osName="Windows 10" /> </project>
