@@ -13,4 +13,4 @@ ansible_winrm_port=5985
 ansible_winrm_server_cert_validation=ignore
 
 
-anisble -i hosts win win_ping## check windows ping 
+anisble -i hosts win -m win_ping## check windows ping 
