@@ -3,11 +3,11 @@
 
 
 
-
 gem install bolt
 apt-get install puppet-bolt
 
 #linux
+##to ignore failure use amdinistrator accounts\group
 
 bolt command run 'ipconfig' -n ip,ip2 -u -p pass
 bolt command run 'ipconfig' -n ip,ip2 -u -p ## prompt for password
