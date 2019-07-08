@@ -12,9 +12,11 @@ apt-get install puppet-bolt
 bolt command run 'ipconfig' -n ip,ip2 -u -p pass
 bolt command run 'ipconfig' -n ip,ip2 -u -p ## prompt for password
 #windows
+bolt command run 'ipconfig' --transport winrm -n ip  -u administrator --no-ssl -p
 bolt command run 'ipconfig' -t winrm://1ip:5985 -u user -p pass  --no-ssl
 bolt command run 'sc stop winrm' -t winrm://1ip:5985 -u user -p pass  --no-ssl
 bolt command run 'net start winrm' -t winrm://1ip:5985 -u user -p   --no-ssl# promp for password
+
 
 
 ##sc /? ##more sc cmds
