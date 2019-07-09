@@ -27,3 +27,11 @@ ansible -i hosts ip -m win_command -a 'wmic product get name, version'# get inst
 ##caling reinstall for package adobe
 ansible -i hosts ip -m win_command -a 'wmic product where name="Adobe Acrobat Reader DC" call reinstall ' 
 
+
+##creating admin user
+
+ansible -i hosts ip -m win_user -a 'fullname="ansible user" groups="administrators" name="ansibleuser" password="ansible@123" state="present"'
+
+##ansibel msg
+
+ansible -i hosts ip -m win_msg -a 'msg="helo", display_seconds="20"'
