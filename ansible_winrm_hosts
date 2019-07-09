@@ -13,6 +13,10 @@ ansible_winrm_port=5985
 ansible_winrm_server_cert_validation=ignore
 
 
+
+ansible-doc -l | grep win_  #get windows module
+
+
 anisble -i hosts win -m win_ping## check windows ping 
 ansible -i hosts ip -m win_command -a "sc /?"  ## sc quesry help cmds
 
