@@ -15,3 +15,11 @@ ansible_winrm_server_cert_validation=ignore
 
 anisble -i hosts win -m win_ping## check windows ping 
 ansible -i hosts ip -m win_command -a "sc /?"  ## sc quesry help cmds
+
+
+ansible -i hosts ip -m win_command -a 'wmic product get name, version'# get installed app list
+
+
+##caling reinstall for package adobe
+ansible -i hosts ip -m win_command -a 'wmic product where name="Adobe Acrobat Reader DC" call reinstall ' 
+
