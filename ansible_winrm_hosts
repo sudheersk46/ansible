@@ -6,7 +6,7 @@ ip
 ansible_user=admin_user
 ansible_password=admin_pass
 ansible_connection=winrm
-#ansible_host=192.168.6.78
+#ansible_host=ip
 ansible_winrm_transport=ntlm
 ansible_winrm_scheme=http
 ansible_winrm_port=5985
