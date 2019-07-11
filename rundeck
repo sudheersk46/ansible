@@ -151,6 +151,27 @@ https://github.com/rundeck-plugins/py-winrm-plugin
 
 https://www.techpaste.com/2015/08/rundeck-windows-nodes-configuration/
 
+##working  
+
+  "json-winproject": {
+    "tags": "remote-winjsonserver",
+    "osFamily": "windows",
+    "username": "administrator",
+    "connectionType": "WINRM_NATIVE",
+    "node-executo": "overthere-winrm",
+    "winrm-password-option": "option.winrmPassword",
+    "osVersion": "16",
+    "osArch": "x86_64",
+    "description": "Rundeck remote json server node",
+    "hostname": "ip",
+    "nodename": "json-winproject",
+    "osName": "windwos 8",
+    "winrm-protocol": "http",
+    "winrmPassword": "pass
+    "winrm-auth-type": "basic",
+    "winrm-password-storage-path": "keys/windows",
+    "winrmTimeout": "30000"
+
 
 Disable the administrator mode in remote windows machine:
 
