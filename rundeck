@@ -31,9 +31,9 @@ cd to projectfolder undet etc  create resource.xml
   osFamily="unix"
   username="superuser"
   hostname="127.0.0.1"
-  ssh-authentication="passw0rd"
+  ssh-authentication="pass"
   sudo-command-enabled="true"
-  sudo-password-storage-path="keys/windows-remote"
+  sudo-password-storage-path="keys/windows"
   />
 </project>
 
@@ -45,7 +45,28 @@ restart the service
 https://docs.rundeck.com/docs/api/index.html#running-adhoc-scripts
 
 json
+##working
 
+{
+
+  "json-project": {
+    "tags": "remote-server",
+    "osFamily": "unix",
+    "username": "user",
+    "osVersion": "16",
+    "osArch": "x86_64",
+    "description": "Rundeck remote server node",
+    "hostname": "127.0.0.1",
+    "nodename": "json-project",
+    "osName": "Ubuntu 16",
+    "ssh-authetication":"password",
+    "sudo-command-enabled": "yes",
+    "sudo-password-storage-path":"keys/win"
+ 
+  }
+}
+  
+  
 {
   "madmartigan.local": {
     "tags": "local,server",
@@ -93,6 +114,18 @@ json
 
 
 ##yaml format
+
+- yaml.remote:
+  description: The production remote yaml server.
+  hostname: 127.0.0.1
+  nodename: yaml.remote
+  tags: 'yaml remote'
+  username: user
+  osName: "Ubuntu 16"
+  osFamily: "unix"
+  ssh-authetication: "pass"
+  sudo-command-enabled: yes
+  sudo-password-storage-path: keys/windows
 
 - Homestar.local:
   description: The production redis server.
