@@ -47,6 +47,11 @@ https://docs.rundeck.com/docs/api/index.html#running-adhoc-scripts
 json
 ##working
 
+
+##ssh & sudo resoaurce options
+
+https://docs.rundeck.com/docs/administration/projects/node-execution/ssh.html
+
 {
 
   "json-project": {
