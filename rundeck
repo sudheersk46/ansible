@@ -143,4 +143,13 @@ json
   https-port: 8443
 
 https://docs.rundeck.com/docs/man5/resource-yaml.html
+##adding windows node
 
+name: Specify the node name of the remote server
+hostname: Remote host node, can be the ip address and include port number the default port are 5985/5986 (http/https).
+username: Remote username to get access to the remote host
+winrm-cmd: Execute commands using Cmd or PowerShell
+winrm-password-storage-path: Specifies a Key Storage Path to look up the authentication password from keys/windwod@##reat pass-under keystorge
+winrm-protocol: Determine the protocol to use, can be http or https
+winrm-auth-type: Type of authentication to use, can be basic or kerberos or ntlm
+winrm-domain: Kerberos domain
