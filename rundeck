@@ -153,6 +153,30 @@ https://www.techpaste.com/2015/08/rundeck-windows-nodes-configuration/
 
 ##working  
 
+##minimum 
+
+
+
+
+  "json-winproject": {
+    "tags": "remote-winjsonserver",
+    "osFamily": "windows",
+    "username": "admin",
+    "winrm-password-option": "option.winrmPassword",
+    "osVersion": "16",
+    "osArch": "x86_64",
+    "description": "Rundeck remote json server node",
+    "hostname": "192.168.6.36",
+    "nodename": "json-winproject",
+    "osName": "windwos 8",
+    "winrm-protocol": "http",
+    "winrm-auth-type": "ntlm",
+    "winrm-password-storage-path": "keys/windows"
+ 
+  }
+}
+  ##
+
   "json-winproject": {
     "tags": "remote-winjsonserver",
     "osFamily": "windows",
