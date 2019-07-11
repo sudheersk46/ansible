@@ -38,3 +38,27 @@ cd to projectfolder undet etc  create resource.xml
 </project>
 
 restart the service
+
+
+##rundeck json and xml format
+
+https://docs.rundeck.com/docs/api/index.html#running-adhoc-scripts
+
+json
+
+{
+    "project":"[project]",
+    "url":"[scriptURL]",
+    "nodeThreadcount": #threadcount#,
+    "nodeKeepgoing": true/false,
+    "asUser": "[asUser]",
+    "argString": "[argString]",
+    "scriptInterpreter": "[scriptInterpreter]",
+    "interpreterArgsQuoted": true/false,
+    "fileExtension": "[fileExtension]",
+    "filter": "[node filter string]"
+}
+
+
+
+
