@@ -147,6 +147,25 @@ https://docs.rundeck.com/docs/man5/resource-yaml.html
 
 https://github.com/rundeck-plugins/py-winrm-plugin
 
+##windos node configure 
+
+https://www.techpaste.com/2015/08/rundeck-windows-nodes-configuration/
+
+
+Disable the administrator mode in remote windows machine:
+
+    Execute below commands to open the windows policies using below command and complete below steps.
+
+    C:\Windows\system32> GPEDIT.MSC
+
+    a. Go to Computer Configuration –> Windows Settings –> Security Settings –> Local Policies –> Security Options
+    b. Search for below policies
+
+    User Account Control: Admin Approval Mode for the Built-in Administrator account
+    User Account Control: Behaviour of the elevation prompt for administrators in Admin Approval Mode
+    User Account Control: Run all administrators in Admin Approval Mode
+
+
 name: Specify the node name of the remote server
 hostname: Remote host node, can be the ip address and include port number the default port are 5985/5986 (http/https).
 username: Remote username to get access to the remote host
