@@ -13,3 +13,28 @@ export MANPATH=$MANPATH:$RDECK_BASE/docs/man
 ##node creation from xml
 
 project> <node name="testwinpc" connectionType="WINRM_NATIVE" node-executor="overthere-winrm" winrm-password-option="pass" winrm-protocol="http" winrm-auth-type="basic" username="admin" winrmPassword="password" description="Windows node" tags="" hostname="ip:5985" osArch="x86_64" osFamily="windows" osName="Windows 10" /> </project>
+
+##rundeck save|encrypt password
+
+https://thedataguy.in/encrypt-key-files-and-passwords-in-rundeck/
+
+
+##crreating nodes
+
+creat a project
+
+cd to projectfolder undet etc  create resource.xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+<node name="linux-remote"
+  osFamily="unix"
+  username="superuser"
+  hostname="127.0.0.1"
+  ssh-authentication="passw0rd"
+  sudo-command-enabled="true"
+  sudo-password-storage-path="keys/windows-remote"
+  />
+</project>
+
+restart the service
