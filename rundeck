@@ -47,6 +47,38 @@ https://docs.rundeck.com/docs/api/index.html#running-adhoc-scripts
 json
 
 {
+  "madmartigan.local": {
+    "tags": "local,server",
+    "osFamily": "unix",
+    "username": "greg",
+    "osVersion": "10.10.3",
+    "osArch": "x86_64",
+    "description": "Rundeck server node",
+    "hostname": "madmartigan.local",
+    "nodename": "madmartigan.local",
+    "osName": "Mac OS X"
+  },
+  "test": {
+    "tags": "alphabet, soup",
+    "osFamily": "unix",
+    "ssh-key-storage-path": "keys/testkey1.pem",
+    "username": "vagrant",
+    "osVersion": "10.10.3",
+    "osArch": "x86_64",
+    "description": "Rundeck server node",
+    "hostname": "192.168.33.12",
+    "nodename": "test",
+    "osName": "Mac OS X"
+  }
+}
+
+
+
+
+
+
+
+{
     "project":"[project]",
     "url":"[scriptURL]",
     "nodeThreadcount": #threadcount#,
@@ -60,5 +92,22 @@ json
 }
 
 
+##yaml format
 
+- Homestar.local:
+  description: The production redis server.
+  hostname: Homestar.local
+  nodename: Homestar.local
+  tags: 'redis_server,production'
+  username: greg
+- bartholemew:
+  description: Webapp node
+  hostname: bartholemew
+  nodename: bartholemew
+  tags: 'web,app'
+  username: greg
+  app-port: 8080
+  https-port: 8443
+
+https://docs.rundeck.com/docs/man5/resource-yaml.html
 
