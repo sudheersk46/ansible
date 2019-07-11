@@ -145,6 +145,8 @@ json
 https://docs.rundeck.com/docs/man5/resource-yaml.html
 ##adding windows node
 
+https://github.com/rundeck-plugins/py-winrm-plugin
+
 name: Specify the node name of the remote server
 hostname: Remote host node, can be the ip address and include port number the default port are 5985/5986 (http/https).
 username: Remote username to get access to the remote host
