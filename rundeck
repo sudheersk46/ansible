@@ -31,9 +31,10 @@ cd to projectfolder undet etc  create resource.xml
   osFamily="unix"
   username="superuser"
   hostname="127.0.0.1"
-  ssh-authentication="pass"
+  ssh-authentication="password" ## use password if providing password i key storage
   sudo-command-enabled="true"
-  sudo-password-storage-path="keys/windows"
+  ssh-password-storage-path="keys/windows" ##name password saved file
+  sudo-password-storage-path="keys/windows" ##name iof sudo saved file
   />
 </project>
 
@@ -66,7 +67,9 @@ https://docs.rundeck.com/docs/administration/projects/node-execution/ssh.html
     "osName": "Ubuntu 16",
     "ssh-authetication":"password",
     "sudo-command-enabled": "yes",
-    "sudo-password-storage-path":"keys/win"
+    "sudo-password-storage-path":"keys/win",
+    "ssh-password-storage-path":"keys/win"
+
  
   }
 }
@@ -128,8 +131,9 @@ https://docs.rundeck.com/docs/administration/projects/node-execution/ssh.html
   username: user
   osName: "Ubuntu 16"
   osFamily: "unix"
-  ssh-authetication: "pass"
+  ssh-authetication: "password"
   sudo-command-enabled: yes
+  "sudo-password-storage-path":"keys/win"
   sudo-password-storage-path: keys/windows
 
 - Homestar.local:
