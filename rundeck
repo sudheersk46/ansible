@@ -251,20 +251,20 @@ loglevel.default="INFO"
 rdeck.base="/home/rundeck"
 
 
-grails.mail.props=grails {
+
+
+grails {
   mail {
     host="smtp.gmail.com"
-    port="587"
-    username="user@gmail.com"
-    password="pass"
-   props=["mail.smtp.auth":"true",
-             "mail.smtp.socketFactory.port":"587",
-             "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
-             "mail.smtp.socketFactory.fallback":"false"]
+    mail.smtp.starttls.enable= true
+    port=587
+    username="user@gmail"
+    password="apppassword"
+   props=["mail.smtp.starttls.enable":true,"mail.smtp.auth":true, "mail.smtp.socketFactory.port":587]
   }
 }
 
-
+grails.mail.default.from="suser@i-exceed.com"
 // rss.enabled if set to true enables RSS feeds that are public (non-authenticated)
 rss.enabled=false
 server.address="hostname"
