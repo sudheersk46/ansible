@@ -264,6 +264,19 @@ grails {
   }
 }
 
+or enale low secure apllication access in gmail optin then use password
+
+
+grails {
+  mail {
+    host="smtp.gmail.com"
+    mail.smtp.starttls.enable= true
+    port=587
+    username="user@gmail"
+    password="password"
+   props=["mail.smtp.starttls.enable":true,"mail.smtp.auth":true, "mail.smtp.socketFactory.port":587]
+  }
+}
 grails.mail.default.from="suser@i-exceed.com"
 // rss.enabled if set to true enables RSS feeds that are public (non-authenticated)
 rss.enabled=false
