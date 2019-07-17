@@ -232,7 +232,7 @@ winrm-domain: Kerberos domain
 
 ##mail cofiguration| grrovy properties
 
-
+shutdown and restart services## if nor working
 
 change prefrences,propertires in rundeck/etc
 
