@@ -2,3 +2,5 @@ for i in {1..5}; do echo hello; done ##repeat cmds 5 times
 
 
 seq 1 5 | xargs -I{} echo hello## repeat cmds 5 times  with xargs
+
+settt=0; while [ $settt -lt 5 ]; do echo gell ; settt=$[$settt+1]; echo $settt; done
