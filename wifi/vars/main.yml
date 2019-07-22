@@ -1,7 +1,9 @@
 ---
 
- test: hello
- stats1: jj
- stats2: ff
 
 
+ansible_ssh_user: username
+ansible_ssh_pass: pass
+ansible_become_method: sudo
+ansible_become_pass: pass
+test: newvalue
