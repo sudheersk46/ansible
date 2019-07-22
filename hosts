@@ -10,3 +10,17 @@ ansible_user=administrator
 ansible_password=pasword
 ansible_connection=ssh
 
+[all:vars]
+#ansible_connection=ssh
+#ansible_user=vagrant
+#ansible_ssh_pass=password
+ansible_ssh_user=user
+ansible_ssh_pass=password
+ansible_become_user=username
+ansible_become_method=sudo|su
+ansible_become_pass=password
+
+ansible-playbook allow.yml -v  --extra-vars "ansible_become_pass=pass"  ansible_become_user=username ansible_become_method=sudo|su
+
+
+
