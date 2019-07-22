@@ -1,0 +1,34 @@
+- name: install mcafee
+  block: 
+  - name: checking mcafee
+    shell: service ma status | grep Active | awk '{print $2}'
+    ignore_errors: yes
+    register: mcafee_status
+  - debug: msg="{{ mcafee_status.stdout }}"
+#    when: mcafee_status.stdout==""
+  - debug: msg="mcafee is  already installed"
+    when: mcafee_status.stdout=="active" or mcafee_status.stdout=="inactive" 
+
+
+  - name: mkdir
+    shell: mkdir -p /tmp/softs
+    when: mcafee_status.stdout==""
+  - name: copying mcafee
+    copy: src="{{ item }}"  dest=/tmp/softs
+    ignore_errors: yes
+#  with_items:
+#   - SoapUI-x64-5.4.0.sh
+#   - App*
+    with_fileglob:
+     - "/home/roles/soft/files/mcafee/*"
+    register: mcafeef
+    when: mcafee_status.stdout==""
+  
+  - name: installing mcafee
+    shell: bash /tmp/softs/* -i 
+    ignore_errors: yes
+    when: mcafeef.changed         
+  - name: del files
+    shell: rm -rf /tmp/softs
+    when: mcafeef.changed 
+  tags: mcafee
