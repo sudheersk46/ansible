@@ -39,7 +39,7 @@ mv -f /opt/user_data/back /etc/screen/
 sleep 3
 echo -e "\e[1;33m 'setting wallpaper' \e[0m";
 sleep 2
-echo "gsettings set org.gnome.desktop.background picture-uri 'file:///etc/screen/back/i-exceed.xml' " >> /etc/bash.bashrc
+echo "gsettings set org.gnome.desktop.background picture-uri 'file:///etc/screen/back/screen.xml' " >> /etc/bash.bashrc
 
 sleep 2
 source /home/superuser/.bashrc 
