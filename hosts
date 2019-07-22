@@ -52,7 +52,7 @@ ansibel-vault view testpass
 ansible-vault decrypt tetspass
 ##run playbook 
 
-nsible-playbook allow.yml -v  --ask-vault-pass testpass## enter vault pass
+ansible-playbook allow.yml -v  --ask-vault-pass testpass## enter vault pass
 
 
 
