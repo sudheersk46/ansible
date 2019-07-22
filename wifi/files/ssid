@@ -103,7 +103,7 @@ echo $ver
 #dev=$(nmcli device status | grep wifi | cut -d ' ' -f1)
 #nmcli device disconnect  $dev
 #else 
-#con=$(nmcli con status | cut -d ' ' -f1 | grep i-exceed)
+#con=$(nmcli con status | cut -d ' ' -f1 | grep wifi)
 #dev=$(nmcli dev status | grep wireless | cut -d ' ' -f1)
 # nmcli dev disconnect iface $dev
 #fi
