@@ -30,7 +30,7 @@ service sssd restart
 us=\\\$(w | awk '{print \\\$1}' | tail -n 1)
 log=\\\$(who | head -n 1 | cut -d ' ' -f 1)
 gro=\\\$(id \\\$log | grep -o id )
-#con=\\\$(nmcli connection show --active | grep -o  i-exceed-Wifi | tail -n 1)
+#con=\\\$(nmcli connection show --active | grep -o  Wifiname | tail -n 1)
 con=\\\$(nmcli connection show --active | awk '{print \\\$1}' | tail -n 1)
 dev=\\\$(nmcli device status | grep wifi | cut -d ' ' -f1)
 #echo $con
@@ -65,7 +65,7 @@ service sssd restart
 us=\\\$(w | awk '{print \\\$1}' | tail -n 1)
 log=\\\$(who | head -n 1 | cut -d ' ' -f 1)
 gro=\\\$(id \\\$log | grep -o id )
-con=\\\$(nmcli con status | cut -d ' ' -f1 | grep i-exceed)
+con=\\\$(nmcli con status | cut -d ' ' -f1 | grep wifi )
 #dev=\\\$(nmcli con  status | awk ' {print \\\$4}' | tail -n 1)
 dev=\\\$(nmcli dev status | grep wireless | cut -d ' ' -f1)
 logger -s \"networklog \\\$us, \\\$log, \\\$gro, \\\$dev, \\\$con \"
