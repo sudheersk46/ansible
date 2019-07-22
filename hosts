@@ -24,3 +24,16 @@ ansible-playbook allow.yml -v  --extra-vars "ansible_become_pass=pass"  ansible_
 
 
 
+##groupvars in inventory
+
+[test]
+127.0.0.1
+
+[test:vars]
+ansible_password=pass
+ansibel_user=user
+ansible_ssh_user=user
+ansible_ssh_pass=password
+ansible_become_user=username
+ansible_become_method=sudo|su
+ansible_become_pass=password
