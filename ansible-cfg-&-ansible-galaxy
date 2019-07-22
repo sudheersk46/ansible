@@ -1,0 +1,14 @@
+touch ~/.ansibel.cfg ## local cfg fiel for ansibel
+
+
+[defaults] 
+host_key_checking = False
+inventory = /home//ansible/tets/hosts
+
+
+##ansibel galaxy default folder
+
+~/.ansible
+
+ansible-galaxy search zabiix
+ansible-galaxy install zabiix
