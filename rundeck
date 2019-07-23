@@ -298,3 +298,25 @@ rundeck.security.authorization.preauthenticated.redirectLogout=false
 rundeck.security.authorization.preauthenticated.redirectUrl="/oauth2/sign_in"
 
 rundeck.log4j.config.file="/home/superuser/ansible/rundeck/server/config/log4j.properties"
+
+
+
+###user creation
+
+
+create user enctypter password from password utility in settings
+
+add 
+user: encyrpted pass or leartext pass and group
+
+in realm.properties
+
+test: md5:fjkafmkqflqfqm, test
+test: test,test
+
+
+###acls
+
+create project related acls under
+
+projects/projectname/acls
