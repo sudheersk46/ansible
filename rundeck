@@ -320,3 +320,43 @@ test: test,test
 create project related acls under
 
 projects/projectname/acls
+
+rundeck/etc/admin.acl
+
+---
+
+description: testuser, all access.
+context:
+  project: 'ansible' # all projects
+for:
+  adhoc:
+    - allow: '*' # allow read/running/killing adhoc jobs
+#  node:
+##    - match: 
+#       name: 'nodename' # allow view/admin of all projects
+#      allow: [read, run] 
+  job: 
+    - match: 
+       name: 'ansible-network-check' # allow view/admin of all projects
+      allow: [read, run] 
+  node:
+    - match: 
+       name: '*' # allow view/admin of all projects
+      allow: [read, run] 
+
+by:
+  group: testuser
+  
+  
+---
+
+description: testgroup, all access.
+context:
+  application: 'rundeck'
+for:
+  project:
+    - match: 
+       name: 'ansible' # allow view/admin of all projects
+      allow: [read, run]
+by:
+  group: testuser
