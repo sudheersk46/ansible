@@ -7,3 +7,10 @@ gpresult /scope computer /v## get cimputer related policies on
 gpresult /scope user /v## get cimputer related policies on 
 gpresult /s remote system /v
 gpresult /s remote system /user username /v
+
+
+C:\> gpresult /z >C:\batch\policy.txt
+C:\> gpresult /user targetusername /scope computer /r
+C:\> gpresult /s srvmain /u ss64dom\hiropln /p p@ssW23 /user targetusername /scope user
+C:\> gpresult /s srvmain /u ss64dom\hiropln /p p@ssW23 /user targetusername /z >policy.txt
+C:\> gpresult /s srvmain /u ss64dom\hiropln /p p@ssW23
