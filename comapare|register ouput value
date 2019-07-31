@@ -1,0 +1,19 @@
+v    - copy: content="{{ my_grep.stdout }}" dest="/home/marcin/var.json"
+- debug: msg="MTU match"
+      when: 
+       - contents ==  mtu_
+       - debug: msg="MTU match"
+      when: 
+       - contents !=  mtu_
+
+vars:
+  motd_value: "{{ lookup('file', '/etc/motd') }}"
+
+
+  - name: checking sssdrejoinconf
+    shell: cat /etc/sssd/sssd.conf
+    ignore_errors: yes
+    register: sssd1_status
+  
+  - debug: msg=" domain_rejoined_correctly "
+    when: sssd_status.stdout == sssd1_status.stdout
