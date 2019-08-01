@@ -1,6 +1,15 @@
 ###block indentation indicaor
 https://yaml-multiline.info/
 
+Add a block with 4 space indent (6 for "nokeepalive ..." and the next line). like
+
+line:  >4
+                - job_name: 'mysql_exporter2'
+                - scrape_interval: 5s
+                
+shell:  |4
+                - job_name: 'mysql_exporter2'
+                - scrape_interval: 5s
 
 ---
 - hosts: node
