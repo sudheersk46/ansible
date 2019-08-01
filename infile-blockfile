@@ -1,0 +1,67 @@
+---
+- hosts: node
+  gather_facts: false
+#  become: true
+#  become_method: sudo
+#  become_user: superuser
+
+  tasks:
+  - name: enable lineinfile access
+    lineinfile:
+     path: /tmp/prometheus.yml
+#     regexp: '127.0.0.1:9108'
+     insertafter: "      - targets: \\['127.0.0.1:9104'\\] "
+     line:  '{{ item }}'
+     with_items:
+                - job_name: 'mysql_exporter2'
+                - scrape_interval: 5s
+                - static_configs:
+                - targets: ['127.0.0.1:9104'] 
+#                        scrape_interval: 5s
+#                        static_configs:
+#                        - targets: ['127.0.0.1:9104']
+
+#     dest: /tmp/back.prometheus.yml
+#     state: present
+     backup: yes
+#      "  - job_name: 'mysql_exporter1'"
+    ignore_errors: yes
+ - name: enable lineinfile access
+    lineinfile:
+     path: /tmp/prometheus.yml
+#     regexp: '127.0.0.1:9108'
+     insertafter: "      - targets: \\['127.0.0.1:9104'\\] "
+     
+     ##add mulitple lines with '|' or '>' 
+     line:  >2
+                - job_name: 'mysql_exporter2'
+                - scrape_interval: 5s
+                - static_configs:
+                - targets: ['127.0.0.1:9104'] 
+#                        scrape_interval: 5s
+#                        static_configs:
+#                        - targets: ['127.0.0.1:9104']
+
+
+  - name: enable blockinfile access
+    blockinfile:
+     dest: /tmp/prometheus.yml
+#     regexp: '127.0.0.1:9104'
+     insertafter: "      - targets"
+     ###bock |2 is to added spaces|tabs  on multiple lines
+     ##spaces acn be ade do  sigle line with ""
+     
+     block:  |2
+         - job_name: 'mysql_exporter2'
+           scrape_interval: 5s
+           static_configs:
+           - targets: ['127.0.0.1:9104'] 
+#                        scrape_interval: 5s
+#                        static_configs:
+#                        - targets: ['127.0.0.1:9104']
+
+#     dest: /tmp/back.prometheus.yml
+#     state: present
+     backup: yes
+#      "  - job_name: 'mysql_exporter1'"
+    ignore_errors: yes
