@@ -1,0 +1,15 @@
+ansible_architecture
+ansible_bios_date
+ansible_bios_version
+ansible_distribution
+ansible_distribution_version
+ansible_domain
+COMPUTERNAME
+USERNAME
+ansible_hostname"
+ansible_memtotal_mb
+ansible_powershell_version
+ansible_product_serial
+ansible_system_vendor
+wmic cpu get name
+wmic diskdrive get model, partition,size,status
