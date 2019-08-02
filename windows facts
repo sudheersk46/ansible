@@ -28,7 +28,7 @@ wmic diskdrive get name,partition,size
 
 wmic cpu list brief
 
-
+##reg query 
 reg query hklm\software\microsoft\winows\currentversion\uninstall
 reg query hkcu\software\microsoft\winows\currentversion\uninstall
 reg query hklm\software\wow6432node\microsoft\winows\currentversion\uninstall
