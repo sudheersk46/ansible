@@ -13,3 +13,22 @@ ansible_product_serial
 ansible_system_vendor
 wmic cpu get name
 wmic diskdrive get model, partition,size,status
+
+
+winrm configsddl defauilt### allow group ot user for winrm access
+
+add user 0r group in adminstartors group ## for winrm
+
+##winrm query
+
+
+wmic csprodcut list briesf
+wmic prodcut list briesf
+wmic diskdrive get name,partition,size
+
+wmic cpu list brief
+
+
+reg query hklm\software\microsoft\winows\currentversion\uninstall
+reg query hkcu\software\microsoft\winows\currentversion\uninstall
+reg query hklm\software\wow6432node\microsoft\winows\currentversion\uninstall
