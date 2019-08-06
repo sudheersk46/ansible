@@ -214,7 +214,52 @@
 #    when: mcafee_status.stdout==""
 #  - debug: msg="mcafee is  already installed"
 #    when: mcafee_status.stdout=="active" or mcafee_status.stdout=="inactive" 
+  - name: updating packages
+    apt:  
+      update_cache: yes 
+      cache_valid_time: 600
+#    ignore_errors: yes
+    register: update_status
+#  - debug: msg="{{ update_status.stdout }}"
+#    failed_when: "'FAILED' in update_status.stderr"
+    
 
+  - name: Install a list of packages
+    apt: name="{{ packages }}" state=present
+    vars:
+      packages:
+       - realmd
+       - sssd
+       - sssd-tools
+       - samba-common
+       - krb5-user
+       - packagekit
+       - samba-common-bin
+       - samba-libs
+       - adcli
+       - ntp
+       - libpam-sss
+       - libnss-sss
+
+       
+#    register: install_status
+#  - debug: msg="{{ install_status.stdout }}"
+#    failed_when: "'FAILED' in install_status.stderr"
+
+#  - name: Install a list of packages
+#    apt: name={{ item }} state=present
+#    with_items:
+#       - openssh-server
+#       - net-tools
+#    register: install_status
+#  - debug: msg="{{ install_status.stdout }}"
+#    failed_when: "'FAILED' in install_status.stderr" ## get failed when cidition fails
+##stop play with 
+#- hosts: somehosts
+#  any_errors_fatal: true
+#  roles:
+#    - myrole
+##when condition changed_when, failed_when, any_errors_fatal 
 
   - name: mkdir
     shell: mkdir -p /tmp/softs
