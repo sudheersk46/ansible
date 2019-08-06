@@ -20,10 +20,22 @@ path "secrets/mysql" {
 
 set password to user with below cmd
 
+./vault   login -method=token
+
+./vault   login -method=userpass username=user 
+
+./vault   login -method=userpass username=user password=pass
+
+
+
+
 
 vault write -address="http://127.0.0.1:8200"  auth/userpass/users/sk password="passw" 
+vault write -address="http://127.0.0.1:8200"  auth/userpass/users/sk password="passw" policies=aclname 
 or
 vault write   auth/userpass/users/sk password="pass"
+
+
 
 link for cmds
 
