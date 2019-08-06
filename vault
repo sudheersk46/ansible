@@ -34,6 +34,7 @@ vault write -address="http://127.0.0.1:8200"  auth/userpass/users/sk password="p
 vault write -address="http://127.0.0.1:8200"  auth/userpass/users/sk password="passw" policies=aclname 
 or
 vault write   auth/userpass/users/sk password="pass"
+export VAULT_ADDR='http://127.0.0.1:8200'
 
 
 
