@@ -20,6 +20,10 @@ path "secrets/mysql" {
 
 set password to user with below cmd
 
+export VAULT_ADDR='http://127.0.0.1:8200'
+
+export PATH=$PATH:athtovaultbinary
+
 ./vault   login -method=token
 
 ./vault   login -method=userpass username=user 
@@ -34,7 +38,6 @@ vault write -address="http://127.0.0.1:8200"  auth/userpass/users/sk password="p
 vault write -address="http://127.0.0.1:8200"  auth/userpass/users/sk password="passw" policies=aclname 
 or
 vault write   auth/userpass/users/sk password="pass"
-export VAULT_ADDR='http://127.0.0.1:8200'
 
 
 
