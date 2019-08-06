@@ -30,7 +30,9 @@ export PATH=$PATH:athtovaultbinary
 
 ./vault   login -method=userpass username=user password=pass
 
+##get error details by logging
 
+vault kv get secret/local## get eeor information
 
 ##dev server need
 
