@@ -39,6 +39,10 @@ vault write -address="http://127.0.0.1:8200"  auth/userpass/users/sk password="p
 or
 vault write   auth/userpass/users/sk password="pass"
 
+vault  kv list   secret
+vault  kv get   secret/local
+
+
 
 
 link for cmds
