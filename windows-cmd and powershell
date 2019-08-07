@@ -21,6 +21,15 @@ type file ## get contents
 fsutil file createnew name 512000000#  creta a file with 500mb
 
 Get-Process | Format-Table -GroupBy ProcessName
+##powershell
+
+$rr=(get-childitem | sort-object -property length -descending | select-object -first 3)
+get-acl $rr ##list owner of file 3 large files
+
+##wmi
+gwmi
+
+get-wmiobject 
 
 
 
