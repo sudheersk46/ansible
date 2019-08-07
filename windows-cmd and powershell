@@ -1,6 +1,7 @@
 get-childitem
 get-acl
 get-chilitem | sort-object -property length -descending | select-object -first 5## list firest 5 items
+get-contents## cat the content
 
 type file | findstr ^^ |  findstr "^[0-9]:" "^1[0-9]:"  ##list contents from line 1-19
 
@@ -13,8 +14,13 @@ type file | findstr ^^ |  findstr "^1[0-9]:" "^4[0-9]:"  ##list contents from li
 fsutil file createnew name size
 fsutil file createnew name 51200000#  creta a file with 50mb
 
+dir * ##list all itemsn under folder
+
+type file ## get contents
+
 fsutil file createnew name 512000000#  creta a file with 500mb
 
+Get-Process | Format-Table -GroupBy ProcessName
 
 
 
