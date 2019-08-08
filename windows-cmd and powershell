@@ -32,6 +32,7 @@ dir * | select length,name  | format-table -autosize
 foreach ($r in $rt ) { get-cal $r}
 foreach($file in (dir -Recurse $folder)
 dir * | foreach-object -process {$_length /1mb} 
+dir * | foreach-object -process {$_.length $_.name} 
 If (condition1 -And condition2) {Do stuff}
 
 ##convert to mb and gb
