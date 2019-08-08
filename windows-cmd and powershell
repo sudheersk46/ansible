@@ -41,7 +41,7 @@ dir * | foreach-object -process {$_length /1mb}
 gwmi
 
 get-wmiobject 
-
+Get-WMIObject -List| Where{$_.name -match "^Win32_"} | Sort Name | Format-Table Name
 
 
 
