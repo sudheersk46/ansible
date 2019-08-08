@@ -45,6 +45,8 @@ gwmi
 
 get-wmiobject 
 Get-WMIObject -List| Where{$_.name -match "^Win32_"} | Sort Name | Format-Table Name
+get-wmiobject -list | findstr.exe /i winrm
+get-wmiobject -query "{ slect * from win32_service where name='winrm'}
 
 
 
