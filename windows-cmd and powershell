@@ -53,7 +53,16 @@ get-wmiobject -list | findstr.exe /i classname like operating,ogicaldisk,product
 
 get-wmiobject -query "{ slect * from win32_service where name='winrm'}"
 sc.exe qc winrm # queries a service
+##run multiple cmds
 
+get-winobject -class -win32_product | findstr /i name
+get-winobject -class -win32_product | findstr /i name | measure-object -line # mesure line
+
+get-winobject -class -win32_product | findstr /i name ;get-winobject -class -win32_product | findstr /i name | measure-object -line # mesure line
+## ri 2 cmds
+
+
+ 
 
 
 
