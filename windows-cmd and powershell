@@ -30,6 +30,7 @@ get-acl $rr ##list owner of file 3 large files
 dir * | select length,name  | format-table -autosize 
 
 foreach ($r in $rt ) { get-cal $r}
+foreach($file in (dir -Recurse $folder)
 dir * | foreach-object -process {$_length /1mb} 
 
 ##convert to mb and gb
