@@ -45,7 +45,13 @@ do-release-upgarde -d|p|c ##check new releae
 ##download  python and upgrade tool tar in /tmp/ubuntu-release* file
 
 ##ls -l /tmp/ubuntu-release* 
+##do-release-upgrade oiption
 
+
+#######################################################################################################
+sudo which do-release-upgrade
+sudo cat $(which do-release-upgrade) ##cehck for proposed or dist option also frontend arguments
+##########################################################################################
 apt-getinstall debconf-doc## for noninteractive mode
 
 do-release-upgrade -f debiabupgradeviewnonintractive
