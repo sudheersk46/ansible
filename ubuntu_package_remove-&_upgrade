@@ -69,6 +69,9 @@ man 7 debconf
 man apt-get
 man do-release-upgrade
 
+##disable lock for update 
+
+gsettings set org.gnome.desktop.screensaver lock-enabled false
 
 ##ansible for upgrade 
 sudo DEBIAN_FRONTEND=noninteractive apt-get -yq install [packagename]
