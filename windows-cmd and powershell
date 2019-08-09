@@ -43,6 +43,7 @@ If (condition1 -And condition2) {Do stuff}
 1234/1gb
 get-chiltem | Sort Name | Format-Table Name.length -auto
 ##wmi
+wmic  product get name,version
 gwmi
 
 get-wmiobject 
