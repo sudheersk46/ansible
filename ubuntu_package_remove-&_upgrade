@@ -104,3 +104,7 @@ apt-key adv -keyserver key.gnupnet.cet --recv-keys expiredkey(expkey)
  ps -o cmd,time,etime -p pid
  
  ps -eo cmd,time,etime,path | grep process ## get start and elapsed time
+ 
+ ####get processid along command
+ myCommand & echo $!
+ sudo apt-get update & echo $!
