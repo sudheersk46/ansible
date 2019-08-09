@@ -41,7 +41,7 @@ update-manager -p ## check proposed version of new release
 do-release-upgarde -d|p|c ##check new releae
 
 ##creates a filder under ~/.cache/update-manager/meta-releases
-#creates a folder under /tmp #chck with time and date
+#creates a folder under /tmp/ubunut|upgrade #check with time and date
 
 apt-getinstall debconf-doc## for noninteractive mode
 
