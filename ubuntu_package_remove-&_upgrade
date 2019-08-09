@@ -37,11 +37,14 @@ upadte-manager ## run update manager for new release
 
 update-manager -p ## check proposed version of new release
 
-##
+##Working of do release upgrade
 do-release-upgarde -d|p|c ##check new releae
 
 ##creates a filder under ~/.cache/update-manager/meta-releases
 #creates a folder under /tmp/ubunut|upgrade #check with time and date
+##download  python and upgrade tool tar in /tmp/upgrade-* file
+
+##ls -l /tmp/upgrade-* 
 
 apt-getinstall debconf-doc## for noninteractive mode
 
