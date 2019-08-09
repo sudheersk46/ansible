@@ -25,7 +25,9 @@ Get-Process | Format-Table -GroupBy ProcessName
 
 $rr=(get-childitem | sort-object -property length -descending | select-object -first 3)
 get-acl $rr ##list owner of file 3 large files
-
+get-childitem hklm:\software\windows\currentversion\uninstall | finstr.exe /i "displayanme uninstall string" ## get application anme and uninstall path
+get-itempropery hklm:\software\windows\currentversion\uninstall | finstr.exe /i "displayanme uninstall string" ## get application anme and uninstall path
+reg query hklm\software\windows\currentversion\uninstall  /s| finstr.exe /i "displayanme uninstall string" ## get application anme and uninstall path
 
 dir * | select length,name  | format-table -autosize 
 
