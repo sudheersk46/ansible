@@ -51,6 +51,13 @@ do-release-upgarde -d|p|c ##check new releae
 #######################################################################################################
 sudo which do-release-upgrade
 sudo cat $(which do-release-upgrade) ##cehck for proposed or dist option also frontend arguments
+
+switch to root user
+download relasefile.tar.gz
+extract xenial.tar.gz
+run ./dist-upgrade.py 
+
+##generally available in /tmp/ubuntu-release-* # after running do-release-upgrade -p|c|d
 ##########################################################################################
 apt-getinstall debconf-doc## for noninteractive mode
 
