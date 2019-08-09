@@ -37,6 +37,42 @@ upadte-manager ## run update manager for new release
 
 update-manager -p ## check proposed version of new release
 
+##
+do-release-upgarde -d|p|c ##check new releae
+
+##creates a filder under ~/.cache/update-manager/meta-releases
+#creates a folder under /tmp #chck with time and date
+
+apt-getinstall debconf-doc## for noninteractive mode
+
+do-release-upgrade -f debiabupgradeviewnonintractive
+
+export DEBIAN_FRONTENd=NonIntercative
+##help pages
+man 7 debconf
+man apt-get
+man do-release-upgrade
+
+
+##ansible for upgrade 
+sudo DEBIAN_FRONTEND=noninteractive apt-get -yq install [packagename]
+apt-get -o DPkg::Options::=--force-confdef upgrade -q -y -u --force-yes
+apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" dist-upgrade
+
+ tasks:
+   - name: update
+     apt: update_cache=yes cache_valid_time=600
+
+   - name: upgrade
+     apt: upgrade=full
+
+   - name: do-release
+     command: do-release-upgrade -f DistUpgradeViewNonInteractive
+     environment:
+     DEBIAN_FRONTEND: noninteractive
+
+https://ubuntu.com/blog/testing-unsupported-release-upgrades
+
 
 ##apt-key
 
@@ -51,3 +87,11 @@ update-manager -p ## check proposed version of new release
 
 apt-key adv -keyserver key.gnupnet.cet --recv-keys expiredkey(expkey)
  apt-key adv -keyserver key.gnupnet.cet --refresh-keys## update all keys
+ 
+ 
+ 
+ ## execution time
+ 
+ ps -o cmd,time,etime -p pid
+ 
+ ps -eo cmd,time,etime,path | grep process ## get start and elapsed time
