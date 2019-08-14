@@ -294,5 +294,69 @@
     when: sssd_status.stdout != sssd1_status.stdout
 
   tags: domain_rejoin
+  
+  - name: node_exporter
+  block: 
+#  - name: checking sssdconf
+#    shell: cat /etc/sssd/sssd.conf
+#    ignore_errors: yes
+#    register: sssd_status
+#  - debug: msg="{{ sssd_status.stdout }}"
+#    when: mcafee_status.stdout==""
+#  - debug: msg="mcafee is  already installed"
+#    when: mcafee_status.stdout=="active" or mcafee_status.stdout=="inactive" 
+
+
+  - name: mkdir
+    shell: mkdir -p /tmp/softs
+#    when: mcafee_status.stdout==""
+  - name: copying node_script
+    copy: src="{{ item }}"  dest=/tmp/softs
+    ignore_errors: yes
+#  with_items:
+#   - SoapUI-x64-5.4.0.sh
+#   - App*
+    with_fileglob:
+     - "/home/tets/roles/soft/files/node_exporter/node_exporter"
+    when: ansible_facts['system'] == "Linux"
+    register: nodef1
+
+  - name: copying node_exporter
+    copy: src="{{ item }}"  dest=/tmp/softs
+    ignore_errors: yes
+#  with_items:
+#   - SoapUI-x64-5.4.0.sh
+#   - App*
+    with_fileglob:
+     - "/home/tets/roles/soft/files/node_exporter/wmi_exporter.msi"
+    when: ansible_facts['system'] == "Win32NT"
+    register: nodef2
+#    when: domain_rejoin_status.stdout==""
+  
+  - name: installing node windwos install
+    win_command: msiexec /i  /tmp/softs/wmi_exporter.msi  ENABLED_COLLECTORS=os,service LISTEN_PORT=5000
+    ignore_errors: yes
+    when: nodef2.changed 
+  - name: installing node linux install
+    shell: bash /tmp/softs/node_exporter &
+    ignore_errors: yes
+    when: nodef1.changed 
+  - name: del files
+    shell: rm -rf /tmp/softs
+    when: nodef1.changed or nodef2.changed
+#  - name: checking sssdrejoinconf
+#    shell: cat /etc/sssd/sssd.conf
+#    ignore_errors: yes
+#    register: sssd1_status
+#  - debug: msg="new sssd status is {{ sssd1_status.stdout }}"
+#  - debug: msg="{{ sssd1_status.stdout }}"
+#  - debug: msg=" domain_rejoined_correctly "
+#    when: sssd_status.stdout == sssd1_status.stdout
+#  - debug: msg=" domain_need_to_rejoined_correctly "
+#    when: sssd_status.stdout != sssd1_status.stdout
+
+  tags: node_install
+
+
 
   when: check_copy_file=="yes"
