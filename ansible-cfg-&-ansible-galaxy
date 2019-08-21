@@ -5,7 +5,15 @@ touch ~/.ansibel.cfg ## local cfg fiel for ansibel
 host_key_checking = False
 inventory = /home//ansible/tets/hosts
 log_path=/home/ansible/role-log
-ansible_python_interpreter=/usr/bin/python3
+ansible_python_interpreter=/usr/bin/python3 |
+interperter_python=/usr/bin/python3.5
+
+##under var file
+
+ansible_interperter_python=/usr/bin/python3.5
+
+
+
 
 
 ##ansibel galaxy default folder
