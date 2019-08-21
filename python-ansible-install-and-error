@@ -1,0 +1,36 @@
+python --version check default veriosn
+pythin-versin# check default veriosn
+
+apt-get install python-pip python3-pip
+
+pip --verison# default path
+pip3 --verison# default path
+
+sudo python -m pip install -U pyopenssl# install and upgarde with python defualt verison
+sudo python3.5 -m pip install -U pyopenssl# install and upgarde with python defualt verison
+
+####check ansible differnet veriosn python
+
+python $(which ansibel) localhost -m ping
+python3.5 $(which ansibel) localhost -m ping
+
+sudo pip3 install ansible
+
+##for openssl error
+pip install -U pyopenssl
+pip3 install -U pyopenssl
+
+
+##setup tools error
+sudo python -m pip install -U setuptools
+sudo python3.5 -m pip install -U setuptools
+
+##for ansible python version error
+sudo python3.5 -m pip install -U ansible
+
+sudo python3.5 -m pip install -U setuptools
+
+pip3 list## list all installed applications
+sudo python3.5 -m pip uninstall setuptools# # uninstall apps
+
+
