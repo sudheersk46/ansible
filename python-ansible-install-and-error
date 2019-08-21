@@ -38,3 +38,40 @@ sudo python3.5 -m pip uninstall setuptools# # uninstall apps
 pip install cryptograph==2.4.2
 sudo python3.5 -m pip install cryptograph==2.4.2
 
+
+##ssh and python interpreter error
+
+##get ansible  config details 
+
+ansible --version
+interperter_python=/usr/bin/python3.5## nder 
+
+[defaults] in .ansible.cfg
+interperter_python=/usr/bin/python3.5## nder 
+
+
+
+##under var file
+
+ansible_interperter_python=/usr/bin/python3.5
+
+## ssh error
+use ssh-copy or sshpass or degfine variable like
+ansble_ssh_user=user
+ansble_ssh_pass=pass
+ansble_become=true
+ansble_beocme_metjod=sudo
+
+in hosts var
+[etst]
+127.0.0.1 
+
+[test:vars]or 
+ansble_ssh_user=user
+ansble_ssh_pass=pass
+ansble_become=true
+ansble_beocme_metjod=sudo
+
+vars in roles
+
+
