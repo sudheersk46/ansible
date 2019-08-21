@@ -54,6 +54,13 @@ ansible-vault decrypt tetspass
 
 ansible-playbook allow.yml -v  --ask-vault-pass testpass## enter vault pass
 
+##ansibel hosts with static hostname
+
+
+[test]
+test1 ansible_host=192.168.1.100
+
+ansible test1 -m ping
 
 
 
