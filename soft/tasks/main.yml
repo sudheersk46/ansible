@@ -206,6 +206,14 @@
   
   - name: domain_rejoin
   block: 
+  - name: check output
+    shell: " ping -c 2 google.com "
+    ignore_errors: yes
+    register: outs
+  - fail: msg="internet authentication  failure"
+    when: outs.rc == 2
+  - debug: msg="internet authentication  success"
+    when: outs.rc == 0
   - name: checking sssdconf
     shell: cat /etc/sssd/sssd.conf
     ignore_errors: yes
