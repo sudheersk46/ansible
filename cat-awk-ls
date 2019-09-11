@@ -3,3 +3,18 @@ cat `ls -lrt | tail -n2` ## display last 2 recentky=modified files
 awk -f'/' '{print $1,$NF}'##display firstcol and last word in line with nF
 
 cat "$(ls -rt | tail -n2)"
+ssh ip -C "ls -lrt /home/user/Music | tail -n2"  > /tmp/loginfo
+
+
+##scp 
+
+scp user@ip@/home/$(ls -1rt | head -93) /tmp
+
+FILE="/path/filename"
+while read line; do
+scp "$line" username@servername:/destination/
+done < $FILE
+##rysnc 
+ssh ip -C "ls -lrt /home/user/Music | tail -n2"  > /tmp/loginfo
+
+##rsync --files-from=/tmologinfo user@ip:/home /tmp
