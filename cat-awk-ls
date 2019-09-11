@@ -4,6 +4,11 @@ awk -f'/' '{print $1,$NF}'##display firstcol and last word in line with nF
 
 cat "$(ls -rt | tail -n2)"
 ssh ip -C "ls -lrt /home/user/Music | tail -n2"  > /tmp/loginfo
+cat /tmp/ne | cut -d ' ' -f1 > /tmp/yy
+cat /tmp/ne | cut -d ' ' -f2 > /tmp/tt
+scp user@ip@/home/$(cat /tmp/tt ) /tmp
+scp user@ip@/home/$(cat /tmp/yy ) /tmp
+
 
 
 ##scp 
