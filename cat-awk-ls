@@ -1,5 +1,5 @@
 cat `ls -lrt | tail -n2` ## display last 2 recentky=modified files
 
-awk -f'/' '{print $1,$NF}'##display firstcol and lst word in line with nF
+awk -f'/' '{print $1,$NF}'##display firstcol and last word in line with nF
 
 cat "$(ls -rt | tail -n2)"
