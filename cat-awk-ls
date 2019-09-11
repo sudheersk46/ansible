@@ -6,8 +6,8 @@ cat "$(ls -rt | tail -n2)"
 ssh ip -C "ls -lrt /home/user/Music | tail -n2"  > /tmp/loginfo
 cat /tmp/ne | cut -d ' ' -f1 > /tmp/yy
 cat /tmp/ne | cut -d ' ' -f2 > /tmp/tt
-scp user@ip@/home/$(cat /tmp/tt ) /tmp
-scp user@ip@/home/$(cat /tmp/yy ) /tmp
+scp user@ip:/home/$(cat /tmp/tt ) /tmp
+scp user@ip:/home/$(cat /tmp/yy ) /tmp
 
 
 
@@ -30,8 +30,8 @@ ssh 192.168.5.95 -C "ls -lrt /home/superuser/Music | tail -n2"  > /tmp/loginfo
 cat /tmp/loginfo | cut -d' ' -f10 >> /tmp/newinfo
 tt=$(cat  /tmp/newinfo | head -n 1)
 yy=$(cat  /tmp/newinfo | tail-n 1)
-scp user@ip@/home/$(cat /tmp/tt ) /tmp
-scp user@ip@/home/$(cat /tmp/yy ) /tmp
+scp user@ip:/home/$(cat /tmp/tt ) /tmp
+scp user@ip:/home/$(cat /tmp/yy ) /tmp
 
 
 
