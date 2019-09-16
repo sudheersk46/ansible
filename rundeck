@@ -13,9 +13,15 @@ export MANPATH=$MANPATH:$RDECK_BASE/docs/man
 
 0 0/2 * * ? * * ## run 2very 2 minutes
 
-0 0 0/4 * * ? * * # run evry 4 hours
+0 0 0/4 * * ? *  # run evry 4 hours
 
-0 0 23 * * ? * * # run 24 hour
+0 0 23 * * ? *  # run at11 pm hour
+
+0 10 18 * * ? *  # run at 6.10  pm hour
+
+##can use simple mode in crin aswell
+
+
 ##node creation from xml
 
 project> <node name="testwinpc" connectionType="WINRM_NATIVE" node-executor="overthere-winrm" winrm-password-option="pass" winrm-protocol="http" winrm-auth-type="basic" username="admin" winrmPassword="password" description="Windows node" tags="" hostname="ip:5985" osArch="x86_64" osFamily="windows" osName="Windows 10" /> </project>
