@@ -1,0 +1,17 @@
+Extracting VMware Installer...done.
+
+  ##change failed condition with failed_when
+  - name: installing horizon
+#    become_method: sudo
+    shell: "  bash /tmp/softs/VMware-Horizon-Client-4.10.0-11053294.x64.bundle  --console --required  --eulas-agreed  --stop-services"
+    ignore_errors: yes
+    register: horizn
+  - debug: var=horizn.stdout_lines
+    failed_when: "'Extracting VMware Installer...done.' not in horizn.stdout_lines"
+    
+    ##when with multiple conditions
+    
+      - name: del files
+    shell: rm -rf /tmp/softs
+    when: horizonf.changed ot horizn.rc != 0
+  tags: horizon
