@@ -6,3 +6,43 @@ uu=$(date +"%F %T")
 mkdir /home/oracle_logs/"$uu"
 scp user@ip:/home/oracle/$tt  /home/superuser/oracle_logs/"$uu"/
 scp user@ip:/home/oracle/$yy /home/superuser/oracle_logs/"$uu"/
+
+
+uu=$(ls -rt /home/superuser/oracle_logs | tail -n1)
+echo > /tmp/testdb2
+
+echo >> /tmp/testdb2
+echo >> /tmp/testdb2
+
+
+echo "###########################Oracle XE backup status######################" >> /tmp/testdb2
+
+
+cat /home/oracle_logs/"$uu"/backup_XE* | head -n 2 >> /tmp/testdb2
+
+cat /home/oracle_logs/"$uu"/backup_XE* | grep -A10 'database mounted' >> /tmp/testdb2
+
+cat /home/oracle_logs/"$uu"/backup_XE* | grep -i "number=" | cut -d '=' -f2,3 | sort | awk -F '/' '{print $1,$NF}' >> /tmp/testdb2
+
+cat /home/oracle_logs/"$uu"/backup_XE* | grep -i "finished" | tail -n 2 >> /tmp/testdb2
+
+cat /home/oracle_logs/"$uu"/backup_XE* | tail -n 2 >> /tmp/testdb2
+
+
+echo >> /tmp/testdb2
+echo >> /tmp/testdb2
+echo >> /tmp/testdb2
+echo >> /tmp/testdb2
+
+echo "##########################Oracle 11g backup status########################"  >> /tmp/testdb2
+
+
+cat /home/oracle_logs/"$uu"/backup_irtek* | head -n 2 >> /tmp/testdb2
+
+cat /home/oracle_logs/"$uu"/backup_irtek* | grep -A10 'database mounted' >> /tmp/testdb2
+
+cat /home/oracle_logs/"$uu"/backup_irtek* | grep -i "number=" | cut -d '=' -f2,3 | sort | awk -F '/' '{print $1,$NF}' >> /tmp/testdb2
+
+cat /home/oracle_logs/"$uu"/backup_irtek* | grep -i "finished" | tail -n 2 >> /tmp/testdb2
+
+cat /home/oracle_logs/"$uu"/backup_irtek* | tail -n 2 >> /tmp/testdb2
