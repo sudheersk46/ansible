@@ -1,0 +1,54 @@
+---
+- hosts: oracle
+  gather_facts: no
+#  remote_user: root
+  
+  tasks:
+
+  - name: checking date
+    shell: echo $(date +"%F %T")
+    register: dat
+  - debug: var=dat.stdout
+    delegate_to: 127.0.0.1
+  
+  - name: Getting logs
+    shell: "ls -rt /home/oracle_logs | tail -n 1"
+    register: logv
+  - debug: var=logv.stdout
+  
+  - name: Getting logs1
+    shell: "ls -rt /home/oracle_logs | tail -n 2 | head -n 1"
+    register: logv1
+  - debug: var=logv1.stdout
+  
+#  - name: files i nlog
+#    fetch: src="{{ logv.stdout }}" dest=/home/oracle_logs/mmmm
+#    register: filec
+#  - debug: var=filec.stdout
+#    delegate_to: 127.0.0.1
+  
+#  - name: xe file
+#    shell: "cat  /home/oracle_logs/mmmm | head -n 1"
+#    register: xe
+#  - debug: var=xe.stdout
+#    delegate_to: 127.0.0.1
+  
+#  - name: 11g file
+#    shell: "cat  /home/oracle_logs/mmmm | tail -n 1"
+#    register: org
+#  - debug: var=org.stdout
+#    delegate_to: 127.0.0.1
+  
+  - name: xe copy
+    fetch: src=/home/oracle_logs/{{ item }} dest=/tmp
+    register: xec
+    with_items:
+       - "{{ logv1.stdout }}"
+#    register: orgct
+       - "{{ logv.stdout }}"
+  - debug: var=xec.stdout
+##fetch copis file or folder with ip address in the dest folder
+#  - name: 11g copy
+#    fecth: src=/home/oracle_logs/{{ logv1.stdout }} dest=/tmp
+#    register: orgc
+#  - debug: var=orgc.stdout
