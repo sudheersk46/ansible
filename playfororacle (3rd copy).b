@@ -102,9 +102,9 @@
           echo "###########################Oracle XE backup status######################" >> /tmp/testdb2
 
 
-          cat "$ty"/"$uu"/192.168.6.34/*/*/*/backup_XE* | head -n 2 >> /tmp/testdb2
+          cat "$ty"/"$uu"/*/*/*/*/backup_XE* | head -n 2 >> /tmp/testdb2
 
-          cat "$ty"/"$uu"/192.168.6.34/*/*/*/backup_XE* | grep -A10 'database mounted' >> /tmp/testdb2 
+          cat "$ty"/"$uu"/*/*/*/*/backup_XE* | grep -A10 'database mounted' >> /tmp/testdb2 
 
           cat /"$ty"/"$uu"/*/*/*/*/backup_XE* | grep -i "number=" | cut -d '=' -f2,3 | sort | awk -F '/' '{print $1,$NF}' >> /tmp/testdb2
 
@@ -121,15 +121,15 @@
           echo "##########################Oracle 11g backup status########################"  >> /tmp/testdb2
 
 
-          cat /home//oracle_logs/"$uu"/192.168.6.34/*/*/*/backup_irtek* | head -n 2 >> /tmp/testdb2
+          cat /home//oracle_logs/"$uu"//*/*/*/backup_irtek* | head -n 2 >> /tmp/testdb2
 
-          cat /home//oracle_logs/"$uu"/192.168.6.34/*/*/*/backup_irtek* | grep -A10 'database mounted' >> /tmp/testdb2
+          cat /home//oracle_logs/"$uu"//*/*/*/backup_irtek* | grep -A10 'database mounted' >> /tmp/testdb2
 
           cat "$ty"/"$uu"/*/*/*/*/backup_irtek* | grep -i "number=" | cut -d '=' -f2,3 | sort | awk -F '/' '{print $1,$NF}' >> /tmp/testdb2
 
-          cat "$ty"/"$uu"/192.168.6.34/*/*/*/backup_irtek* | grep -i "finished" | tail -n 2 >> /tmp/testdb2
+          cat "$ty"/"$uu"/*/*/*/*/backup_irtek* | grep -i "finished" | tail -n 2 >> /tmp/testdb2
 
-          cat "$ty"/"$uu"/192.168.6.34/*/*/*/backup_irtek* | tail -n 2 >> /tmp/testdb2    
+          cat "$ty"/"$uu"/*/*/*/*/backup_irtek* | tail -n 2 >> /tmp/testdb2    
           
     register: log
     delegate_to: 127.0.0.1
@@ -149,7 +149,7 @@
      host: smtp.gmail.com
      port: 587
      username: username@gmail.com
-     password: password@4321
+     password: pass
      to: username <username@.com>
      subject: Ansible-oracle-report
 #     from: username@.com 
