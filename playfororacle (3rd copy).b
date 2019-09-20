@@ -144,28 +144,42 @@
     register: out
   - debug: var=out.stdout_lines
   
-  - name: Send e-mail to a bunch of users, attaching files
-    mail:
-     host: smtp.gmail.com
-     port: 587
-     username: username@gmail.com
-     password: pass
-     to: username <username@.com>
-     subject: Ansible-oracle-report
+#  - name: Send e-mail to a bunch of users, attaching files
+#    mail:
+##     host: smtp.gmail.com
+ #    port: 587
+ #    username: username@gmail.com
+ #    password: pass
+ #    to: username <username@.com>
+ #    subject: Ansible-oracle-report
 #     from: username@.com 
 #     to:
 #     - username <username@.com>
 #    - Suzie Something <sue@example.com>
 #    cc: Charlie Root <root@localhost>
-     attach:
-     - /tmp/testdb2
+#     attach:
+ #    - /tmp/testdb2
 #    - /tmp/avatar2.png
 #    headers:
 #    - Reply-To=john@example.com
 #    - X-Special="Something or other"
 #    charset: us-ascii
-     delegate_to: localhost
+#     delegate_to: localhost
      
+     
+ - name: Send e-mail to a bunch of users, attaching files
+    mail:
+     host: smtp.gmail.com
+     port: 587
+     username: usernama@gmail.com
+     password: passw
+     to: ssuer <suername@.com>
+     subject: Ansible-oracle-report
+     attach:
+      - /tmp/testdb2
+    register: test
+    delegate_to: localhost
+  - debug: var=register.stdout
      
      
      
