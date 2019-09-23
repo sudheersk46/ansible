@@ -1,0 +1,96 @@
+---
+
+- hosts: oracle
+  gather_facts: no
+#  remote_user: root
+  
+  tasks:
+  - name: orcale-play1
+    include: /home//ansible/localscript.yml
+#  -
+#  - local_action: script /home//ansible/oraclenew
+#    register: play1
+#    delegate_to: localhost
+#  - debug: var=play1.stdout
+#    tags: newinfo
+
+  - name: getting 11g file
+    shell: cat  /home//oracle_logs/loginfo | head -n 1
+    register: play2
+    delegate_to: localhost
+  - debug: var=play2.stdout
+
+  
+  - name: getting xe file
+    shell: cat  /home//oracle_logs/loginfo | tail -n 1
+    register: play3
+    delegate_to: localhost
+  - debug: var=play3.stdout
+
+  
+
+  - name: getting date
+    shell: "ls -rt /home//oracle_logs | tail -n1"
+    register: play4
+    delegate_to: localhost
+  - debug: var=play4.stdout
+
+  
+  
+  - name:  copying logs
+    fetch: src=/home/oracle/{{ item }} dest=/home//oracle_logs/{{ play4.stdout }}
+    register: xec
+    with_items:
+       - "{{ play2.stdout }}"
+#    register: orgct
+       - "{{ play3.stdout }}"
+  - debug: var=xec.stdout
+  
+  - name: orcale-localpaly2
+    include: /home//ansible/localscript2.yml
+  
+  
+#  - name: running outoput script
+#    shell: bash /home//ansible/oracle_script
+#    register: play5
+#  - debug: var=play5.stdout
+#    delegate_to: localhost
+  
+  
+#  - name: getting file for mail
+#    shell: uu=$(ls -rt /home//oracle_logs | tail -n1)
+#           ii=/home//oracle_logs/{{ play4.stdout }}
+#    register: play6
+#  - debug: var=play6.stdout
+  
+    
+  
+#  - name: getting file for mail2
+#    shell: ii=/home//oracle_logs/{{ play6.stdout }}
+#    register: play7
+#  - debug: var=play7.stdout
+  
+  
+  - name: Send e-mail to a bunch of users, attaching files
+    mail:
+     host: smtp.gmail.com
+     port: 587
+     username: username@domain.com
+     password: pass@pass
+     to: usrnmae usenbmar<suserns,ae.usernma@i-exceed.com>
+     subject: Ansible-oracle-report
+     attach:
+      - /home//oracle_logs/{{ play4.stdout }}/testdb2
+    register: test
+    delegate_to: localhost
+  - debug: var=register.stdout
+     
+  
+  
+  
+  
+  
+  
+  
+  
+  

@@ -1,0 +1,9 @@
+---
+
+#- name: 'run local pre-deployment script'
+#- hosts: oracle
+#  tasks:
+    - local_action: script /home/ansible/oraclenew
+      register: play1
+    - debug: var=play1.stdout
+      tags: newinfo

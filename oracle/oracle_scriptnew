@@ -1,0 +1,39 @@
+ii=$(ls -rt /home//oracle_logs | tail -n1)
+ii=/home//oracle_logs/"$ii"
+echo > "$ii"/testdb2
+
+echo >> "$ii"/testdb2
+echo >> "$ii"/testdb2
+
+
+echo "###########################Oracle XE backup status######################" >> "$ii"/testdb2
+
+
+cat "$ii"/*/*/*/backup_XE* | head -n 2 >> "$ii"/testdb2
+
+cat "$ii"/*/*/*/backup_XE* | grep -A10 'database mounted' >> "$ii"/testdb2
+
+cat "$ii"/*/*/*/backup_XE* | grep -i "number=" | cut -d '=' -f2,3 | sort | awk -F '/' '{print $1,$NF}' >> "$ii"/testdb2
+
+cat "$ii"/*/*/*/backup_XE* | grep -i "finished" | tail -n 2 >> "$ii"/testdb2
+
+cat "$ii"/*/*/*/backup_XE* | tail -n 2 >> "$ii"/testdb2
+
+
+echo >> "$ii"/testdb2
+echo >> "$ii"/testdb2
+echo >> "$ii"/testdb2
+echo >> "$ii"/testdb2
+
+echo "##########################Oracle 11g backup status########################"  >> "$ii"/testdb2
+
+
+cat "$ii"/*/*/*/backup_irtek* | head -n 2 >> "$ii"/testdb2
+
+cat "$ii"/*/*/*/backup_irtek* | grep -A10 'database mounted' >> "$ii"/testdb2
+
+cat "$ii"/*/*/*/backup_irtek* | grep -i "number=" | cut -d '=' -f2,3 | sort | awk -F '/' '{print $1,$NF}' >> "$ii"/testdb2
+
+cat "$ii"/*/*/*/backup_irtek* | grep -i "finished" | tail -n 2 >> "$ii"/testdb2
+
+cat "$ii"/*/*/*/backup_irtek* | tail -n 2 >> "$ii"/testdb2
