@@ -77,7 +77,7 @@
      port: 587
      username: username@domain.com
      password: pass@pass
-     to: usrnmae usenbmar<suserns,ae.usernma@i-exceed.com>
+     to: usrnmae usenbmar<.usernma@domain.com>
      subject: Ansible-oracle-report
      attach:
       - /home//oracle_logs/{{ play4.stdout }}/testdb2
