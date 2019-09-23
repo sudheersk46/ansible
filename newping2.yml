@@ -1,0 +1,245 @@
+---
+- hosts: test
+  become: true
+  become_method: sudo
+
+  gather_facts: true
+
+#-become-method: sudo-
+
+  tasks: 
+  
+  - name: Running on date
+    command: "date"
+    register: dat
+    ignore_errors: yes
+  
+  - name: Storage check
+    command: "df -h"
+    register: stor
+    ignore_errors: yes
+    
+  - name: Logged in usecheck
+    shell: "who | awk '{print $1}' | head -n 1 "
+    register: userl
+    ignore_errors: yes
+  - debug: var=userl
+    
+  - name:  floor1 AP Check
+    command: 'ping ip -c  2'
+    ignore_errors: yes
+    register: Fstap
+  - debug: var="Fstap"
+  
+  - name: floor2  AP Check
+    command: 'ping ip -c  2'
+    ignore_errors: yes
+    register: lr2nd
+  - debug: var="lr2nd"
+  
+  - name:   Gnd Check
+    command: 'ping ip -c  2'
+    ignore_errors: yes
+    register: lrgnd
+  - debug: var="lrgnd"
+  
+  - name: floor3 321 AP Check
+    command: 'ping ip -c  2'
+    ignore_errors: yes
+    register: lr2nd321
+  - debug: var="lr2nd321"
+  
+  - name: floor4 AP Check
+    command: 'ping ip -c  2'
+    ignore_errors: yes
+    register: lrconf
+  - debug: var="lrconf"
+  
+  - name: floor5  AP Check
+    command: 'ping ip -c  2'
+    ignore_errors: yes
+    register: slemap
+  - debug: var="slemap"
+    
+    
+  - name: First Floor  Printer Check
+    command: 'ping ip -c  2'
+    ignore_errors: yes
+    register: firp
+  - debug: var="firp"
+  
+  - name: floor1  Printer Check
+    command: 'ping ip -c  2'
+    ignore_errors: yes
+    register: secp
+  - debug: var="secp"
+  
+  - name: Server connectivity check
+    command: 'ping ip -c  2'
+    register: orcl
+    ignore_errors: yes
+  - debug: var="orcl"
+    
+    
+  - name: P Domain check
+    command: 'ping ip -c  2'
+    register: priml
+    ignore_errors: yes
+    tags: priml-t
+  - debug: var="priml"
+  
+  - name: S Domain check
+    command: 'ping ip -c  2'
+    register: secl
+    ignore_errors: yes
+    tags: secl-t
+  - debug: var="secl"
+  
+  - name: 3 Domain check
+    command: 'ping ip -c  2'
+    register: slemd
+    ignore_errors: yes
+    tags: salemd-t
+  - debug: var="slemd"
+  
+  - name: prim ISP Check
+    command: 'ping ip -c  2'
+    register: saleml
+    ignore_errors: yes
+    tags: saleml-t
+  - debug: var="saleml"
+  
+  - name:  Primary2 ISP check
+    command: 'ping ip -c  2'
+    register: blrp
+    ignore_errors: yes
+    tags: blrp-t
+  - debug: var="blrp"
+  
+  - name: Secondary ISP check
+    command: 'ping ip -c  2'
+    register: blrs
+    ignore_errors: yes
+    tags: blrs-t
+  - debug: var="blrs"
+  
+  - name: fourth ISP check
+    command: 'ping ip -c  2'
+    register: blrt
+    ignore_errors: yes
+    tags: blrt-t
+  - debug: var="blrt"
+  
+  
+  - name: website1 Check
+    shell: 'wget http://ip/url1'
+    register: bugl
+    ignore_errors: yes
+    tags: bugl-t
+  - debug: var="bugl"
+
+  - name: website2 Check
+    shell: 'wget http://ip/url2'
+    register: openl
+    ignore_errors: yes
+    tags: open-t
+  - debug: var="openl" 
+    
+  - debug: msg="Date is {{ dat.stdout }}" 
+  - debug: msg="{{ stor.stdout_lines }}"
+  - debug: msg=" Logged in User is {{ userl.stdout }}"    
+  - debug: msg="floor1 Accesspoint Working"
+    when: Fstap.stderr==""
+  - debug: msg="fllor2 Accesspoint Working"
+    when: blr2nd.stderr==""
+  - debug: msg="floor3 321 Accesspoint Working"
+    when: blr2nd321.stderr==""
+  - debug: msg="floor4 Accesspoint Working"
+    when: blrgnd.stderr==""
+  - debug: msg="floor5 Accesspoint Working"
+    when: blrconf.stderr==""
+  - debug: msg="fllor6  Accesspoint Working"
+    when: salemap.stderr==""
+  - debug: msg=" Windows Primary Server is UP"
+    when: priml.rc == 0
+  - debug: msg="Windows Secondary Server is UP"
+    when: secl.stderr==""
+  - debug: msg="AD Windows  Server is UP"
+    when: salemd.rc == 0
+  - debug: msg="Server is UP"
+    when: orcl.stderr==""
+  - debug: msg="website1 is UP"
+    when: bugl.rc == 0
+  - debug: msg="website2 is UP"
+    when: openl.rc == 0
+  - debug: msg=" First Floor Printer is UP"
+    when: firp.rc == 0
+  - debug: msg="BSecond Floor Printet is UP"
+    when: secp.rc == 0
+  - debug: msg="PrimaryISP  is UP"
+    when: blrp.rc == 0
+  - debug: msg="SecondaryISP  is UP"
+    when: blrs.rc == 0
+  - debug: msg="fourth ISP  is UP"
+    when: blrt.rc == 0
+  - debug: msg="backup ISP  is UP"
+    when: saleml.rc == 0
+    
+#  - debug: msg="1st floor Accesspoint Down"
+#    when: Fstap.stdout==""
+#  - debug: msg="Windows Primary Server is Down"
+#    when: orcl.stdout==""
+#  - debug: msg="Oracle Server is Down"
+#    when: priml.stdout==""
+#  - debug: msg="Bugzilla is Down"
+#    when: bugl.rc != 0
+#  - debug: msg="Openproject is Down"
+#    when: openl.rc != 0
+  - debug: msg="floor1 Accesspoint NOT Working"
+    when: Fstap.stdout==""
+  - debug: msg="floor2 Accesspoint NOT Working"
+    when: blr2nd.stdout==""
+  - debug: msg="floor3 321 Accesspoint NOT Working"
+    when: blr2nd321.stdout==""
+  - debug: msg="floor4 Accesspoint NOT Working"
+    when: blrgnd.stderr==""
+  - debug: msg="floor5 Accesspoint NOT Working"
+    when: blrconf.stdout==""
+  - debug: msg="floor6 Accesspoint NOT Working"
+    when: salemap.rc != 0
+  - debug: msg="Windows Primary Server is DOWN"
+    when: priml.stdout==""
+  - debug: msg=" Windows Secondary Server is DOWN"
+    when: secl.stdout==""
+  - debug: msg="Ad Windows  Server is DOWN"
+    when: salemd.rc != 0
+  - debug: msg=" Server is DOWN"
+    when: orcl.stdout==""
+  - debug: msg="wensite1 is DOWN"
+    when: bugl.rc != 0
+  - debug: msg="website2 is DOWN"
+    when: openl.rc != 0
+  - debug: msg="First Floor Printer is DOWN"
+    when: firp.rc != 0
+  - debug: msg="Second Floor Printet is DOWN"
+    when: secp.rc != 0
+  - debug: msg="PrimaryISP  is DOWN"
+    when: blrp.rc != 0
+  - debug: msg="SecondaryISP  is DOWN"
+    when: blrs.rc != 0
+  - debug: msg="fourth ISP  isP  is DOWN"
+    when: blrt.rc != 0
+  - debug: msg="backup ISP  is  DOWN"
+    when: saleml.rc != 0
+    
+    
+#  - name: debug outpur
+#    debug: {{ item }}
+#    with_items:
+#     - 
+    
+    
+    
+    
+    
+    
