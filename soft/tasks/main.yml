@@ -246,8 +246,24 @@
        - samba-libs
        - adcli
        - ntp
-       - libpam-sss
+#       - libpam-sss
        - libnss-sss
+## or use apt-get in older version       
+#  - name: Install a list of packages
+#    shell: apt-get install {{ item }} -y
+#    With_items:
+#       - realmd
+#       - sssd
+##       - sssd-tools
+#       - samba-common
+#       - krb5-user
+#       - packagekit
+#       - samba-common-bin
+#       - samba-libs
+#       - adcli
+#       - ntp
+ #      - libpam-sss
+#       - libnss-sss
 
        
 #    register: install_status
@@ -282,6 +298,16 @@
      - "/home/tets/roles/soft/files/domain/*"
     register: domainf
 #    when: domain_rejoin_status.stdout==""
+
+
+  
+  - name: Installing required app
+    shell: |
+           apt-get install debconf-utils  -y
+           debconf-set-selections /tmp/softs/pamconf
+           apt-get install libpam-sss -y
+    ignore_errors: yes
+    when: domainf.changed
   
   - name: installing sssd rejoin
     shell: bash /tmp/softs/domain_rejoin 
