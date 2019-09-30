@@ -1,0 +1,36 @@
+--- 
+
+- hosts: 127.0.0.1
+  gather_facts: false
+  
+  
+  tasks:
+  
+  
+  - name: var
+    shell: echo $(date)
+    ignore_errors: yes
+    register: hh
+  - debug: var=hh.stdout
+  
+  - name: copy var
+    copy: content={{ item }} dest=/tmp/jjh
+    with_items: 
+#      - "{{ hh.stdout }}"
+#      - "{{ hh.stdout }}"
+      - kkfd
+      - "{{ hh.stdout }}"
+    delegate_to: localhost
+
+  - name: line  var
+    lineinfile: line={{ item }} insertafter=EOF dest=/tmp/jjh
+    with_items: 
+#      - "{{ hh.stdout }}"
+#      - "{{ hh.stdout }}"
+      - "{{ hh.stdout }}"
+      - hh.stdout1 
+      - kkfd
+      - dfgfh  
+      - kjkkk
+      - nkjjk
+    
