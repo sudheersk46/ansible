@@ -233,11 +233,75 @@
     when: saleml.rc != 0
     
     
+    ###mail alert on failure 
+    
 #  - name: debug outpur
 #    debug: {{ item }}
 #    with_items:
 #     - 
+   ###echo only on failure to file 
+  - shell: echo "##################primary ISP is Down{{ tth.stdout}}##################"  >> /home/ping1.txt
+    when: saleml.rc != 0
     
+    
+#  - name: debug outpur
+#    debug: {{ item }}
+#    with_items:
+#     - 
+    ##3content used to copy a single entry of content of file
+    ##for copy multuiple register valure user lineinline module
+    
+    ##local_action: module ##used to run script or cmd son local machine
+  - name: copy register values
+    copy: content={{ item }} dest=/tmp/regvalu
+    with_items: 
+#      - "{{ dat.stdout_lines }}"
+      - "{{ userl.stdout }}"
+    ignore_errors: yes
+    register: copyr
+
+    tags: copyr-t 
+ 
+  - name: cat register values
+    shell: cat /home/ping1.txt
+    ignore_errors: yes
+    register: out
+  - debug: var=out.stdout_lines
+  
+  - name: alert for failure
+    shell: echo "$(grep -i down /home/ping1.txt)" > /tmp/mailping
+    ignore_errors: yes
+    
+  - name: cat mail attching file
+    shell: cat /tmp/mailping
+    ignore_errors: yes
+    register: outq
+  - debug: var=outq.stdout_lines
+#    register: out1
+#  - debug: var=out1.stdout_lines
+  
+  ###use when 
+   #         -item or
+  #          -item and 
+   #         -item 
+   #to check  multiple coldition 
+  - name: Send e-mail to a bunch of users, attaching files
+    mail:
+     host: smtp.gmail.com
+     port: 587
+     username: uswrname@gmail.com
+     password: passwor
+     to:  <username@domain.com>
+     subject: Network-test-Report
+     attach:
+      - /tmp/mailping
+    ignore_errors: yes
+    register: test
+    when: 
+       sald.rc != 0 or 
+       salf.rc != 0
+    delegate_to: localhost
+  - debug: var=register.stdout
     
     
     
