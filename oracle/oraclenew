@@ -1,0 +1,8 @@
+sshpass -f /home/pass/spass ssh user@ip -C "ls -rt /home/oracle/| tail -n2" > /home/oracle_logs/loginfo
+#cat /tmp/loginfo | awk -F' ' '{print $NF}' >> /tmp/newinfo
+##tt=$(cat  /home/oracle_logs/loginfo | head -n 1)
+#yy=$(cat  /home/oracle_logs/loginfo | tail -n 1)
+uu=$(date +"%F %T")
+mkdir /home/superuser/oracle_logs/"$uu"
+#scp user@ip:/home/oracle/$tt  /home/superuser/oracle_logs/"$uu"/
+#scp user@ip:/home/oracle/$yy /home/superuser/oracle_logs/"$uu"/
