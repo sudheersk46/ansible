@@ -25,3 +25,35 @@
       - "Hdd model = {{ ansible_devices.sda.model }}"
       - "uuids = {{ ansible_device_links.uuids }}"
       - "processor= {{ansible_processor }}"
+
+
+  - name: output facts
+    shell: |
+           echo >> /home//ansible-reports 
+           echo ----date and time--- >> /home/ansible-reports
+           date >> /home/ansible-reports
+           echo  Username={{ userlog.stdout }} \
+           Model={{ version.stdout }} \
+           SerialNo={{ serialno.stdout }}  \
+           Architecture={{ ansible_architecture }} \
+           Bios date= {{ ansible_bios_date }} \
+           Ram={{ ansible_memtotal_mb }}mb \
+           Release={{ ansible_lsb.release }} \
+           kernel={{ ansible_kernel }} \
+           swap={{  ansible_swaptotal_mb }}mb \
+           verison={{ ansible_distribution_version }} \
+           hostname={{ ansible_nodename }} \
+           Hdd model={{ ansible_devices.sda.model }} >> /home/ansible-reports  
+           Hdd size={{ hdds.stdout }} 
+           Processor={{ processor.stdout }}   >> /tmp/role.txt  
+    ignore_errors: yes
+    delegate_to: 127.0.0.1
+  - name: local_action
+    local_action: |
+                  shell sh 
+                  command  echo >> /home/ansible-reports 
+                  command echo ----date and time--- >> /home/ansible-reports
+                  command date >> /home/ansible-reports    
+                  "command echo  Username={{ userlog.stdout }} \            
+                   Hdd model={{ ansible_devices.sda.model }} >> /home/ansible-reports "
+  tags: facts 
