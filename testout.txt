@@ -1,0 +1,207 @@
+
+Date and Time
+
+2021-05-21 06:10:01
+
+Cluster Info
+
+[0;32mKubernetes control plane[0m is running at [0;33mhttps://172.31.60.232:6443[0m
+[0;32mCoreDNS[0m is running at [0;33mhttps://172.31.60.232:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy[0m
+
+Node Info
+
+NAME                            STATUS   ROLES                  AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE                                      KERNEL-VERSION                CONTAINER-RUNTIME
+ip-172-31-56-188.ec2.internal   Ready    <none>                 12m   v1.21.1   172.31.56.188   <none>        Red Hat Enterprise Linux Server 7.9 (Maipo)   3.10.0-1127.el7.x86_64        docker://20.10.6
+k8s-master                      Ready    control-plane,master   12m   v1.21.1   172.31.60.232   <none>        Red Hat Enterprise Linux Server 7.9 (Maipo)   3.10.0-1160.15.2.el7.x86_64   docker://20.10.6
+
+Namespace Info
+
+NAME              STATUS   AGE
+default           Active   12m
+demo              Active   12m
+kube-node-lease   Active   12m
+kube-public       Active   12m
+kube-system       Active   12m
+
+ Info
+
+NAME                            STATUS   ROLES                  AGE   VERSION
+ip-172-31-56-188.ec2.internal   Ready    <none>                 12m   v1.21.1
+k8s-master                      Ready    control-plane,master   12m   v1.21.1
+
+Pods Info
+
+NAME                     READY   STATUS    RESTARTS   AGE
+nginx-778595d664-6d7xq   1/1     Running   0          12m
+nginx-778595d664-xspl6   1/1     Running   0          12m
+
+Service Info
+
+NAME                 TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
+nginx-demo-service   NodePort   10.96.76.243   <none>        80:32417/TCP   12m
+
+Deployment Info
+
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE
+nginx   2/2     2            2           12m
+
+Complete Info
+
+Name:               ip-172-31-56-188.ec2.internal
+Roles:              <none>
+Labels:             beta.kubernetes.io/arch=amd64
+                    beta.kubernetes.io/os=linux
+                    kubernetes.io/arch=amd64
+                    kubernetes.io/hostname=ip-172-31-56-188.ec2.internal
+                    kubernetes.io/os=linux
+Annotations:        kubeadm.alpha.kubernetes.io/cri-socket: /var/run/dockershim.sock
+                    node.alpha.kubernetes.io/ttl: 0
+                    volumes.kubernetes.io/controller-managed-attach-detach: true
+CreationTimestamp:  Fri, 21 May 2021 05:57:35 +0000
+Taints:             <none>
+Unschedulable:      false
+Lease:
+  HolderIdentity:  ip-172-31-56-188.ec2.internal
+  AcquireTime:     <unset>
+  RenewTime:       Fri, 21 May 2021 06:09:56 +0000
+Conditions:
+  Type             Status  LastHeartbeatTime                 LastTransitionTime                Reason                       Message
+  ----             ------  -----------------                 ------------------                ------                       -------
+  MemoryPressure   False   Fri, 21 May 2021 06:07:48 +0000   Fri, 21 May 2021 05:57:35 +0000   KubeletHasSufficientMemory   kubelet has sufficient memory available
+  DiskPressure     False   Fri, 21 May 2021 06:07:48 +0000   Fri, 21 May 2021 05:57:35 +0000   KubeletHasNoDiskPressure     kubelet has no disk pressure
+  PIDPressure      False   Fri, 21 May 2021 06:07:48 +0000   Fri, 21 May 2021 05:57:35 +0000   KubeletHasSufficientPID      kubelet has sufficient PID available
+  Ready            True    Fri, 21 May 2021 06:07:48 +0000   Fri, 21 May 2021 05:57:45 +0000   KubeletReady                 kubelet is posting ready status
+Addresses:
+  InternalIP:  172.31.56.188
+  Hostname:    ip-172-31-56-188.ec2.internal
+Capacity:
+  cpu:                2
+  ephemeral-storage:  104845292Ki
+  hugepages-2Mi:      0
+  memory:             8007428Ki
+  pods:               110
+Allocatable:
+  cpu:                2
+  ephemeral-storage:  96625420948
+  hugepages-2Mi:      0
+  memory:             7905028Ki
+  pods:               110
+System Info:
+  Machine ID:                 9e9dcd310e094a9eb365011e11cbb745
+  System UUID:                EC25A1F6-10F2-2769-FBC0-2F09CE1CEE86
+  Boot ID:                    879555d7-6cf5-48fb-9fea-0e7404e6cab1
+  Kernel Version:             3.10.0-1127.el7.x86_64
+  OS Image:                   Red Hat Enterprise Linux Server 7.9 (Maipo)
+  Operating System:           linux
+  Architecture:               amd64
+  Container Runtime Version:  docker://20.10.6
+  Kubelet Version:            v1.21.1
+  Kube-Proxy Version:         v1.21.1
+Non-terminated Pods:          (1 in total)
+  Namespace                   Name                CPU Requests  CPU Limits  Memory Requests  Memory Limits  Age
+  ---------                   ----                ------------  ----------  ---------------  -------------  ---
+  kube-system                 kube-proxy-9qtk2    0 (0%)        0 (0%)      0 (0%)           0 (0%)         12m
+Allocated resources:
+  (Total limits may be over 100 percent, i.e., overcommitted.)
+  Resource           Requests  Limits
+  --------           --------  ------
+  cpu                0 (0%)    0 (0%)
+  memory             0 (0%)    0 (0%)
+  ephemeral-storage  0 (0%)    0 (0%)
+  hugepages-2Mi      0 (0%)    0 (0%)
+Events:
+  Type    Reason                   Age                From        Message
+  ----    ------                   ----               ----        -------
+  Normal  Starting                 12m                kubelet     Starting kubelet.
+  Normal  NodeHasSufficientMemory  12m (x2 over 12m)  kubelet     Node ip-172-31-56-188.ec2.internal status is now: NodeHasSufficientMemory
+  Normal  NodeHasNoDiskPressure    12m (x2 over 12m)  kubelet     Node ip-172-31-56-188.ec2.internal status is now: NodeHasNoDiskPressure
+  Normal  NodeHasSufficientPID     12m (x2 over 12m)  kubelet     Node ip-172-31-56-188.ec2.internal status is now: NodeHasSufficientPID
+  Normal  NodeAllocatableEnforced  12m                kubelet     Updated Node Allocatable limit across pods
+  Normal  Starting                 12m                kube-proxy  Starting kube-proxy.
+  Normal  NodeReady                12m                kubelet     Node ip-172-31-56-188.ec2.internal status is now: NodeReady
+
+
+Name:               k8s-master
+Roles:              control-plane,master
+Labels:             beta.kubernetes.io/arch=amd64
+                    beta.kubernetes.io/os=linux
+                    dedicated=master
+                    kubernetes.io/arch=amd64
+                    kubernetes.io/hostname=k8s-master
+                    kubernetes.io/os=linux
+                    node-role.kubernetes.io/control-plane=
+                    node-role.kubernetes.io/master=
+                    node.kubernetes.io/exclude-from-external-load-balancers=
+Annotations:        kubeadm.alpha.kubernetes.io/cri-socket: /var/run/dockershim.sock
+                    node.alpha.kubernetes.io/ttl: 0
+                    volumes.kubernetes.io/controller-managed-attach-detach: true
+CreationTimestamp:  Fri, 21 May 2021 05:57:18 +0000
+Taints:             <none>
+Unschedulable:      false
+Lease:
+  HolderIdentity:  k8s-master
+  AcquireTime:     <unset>
+  RenewTime:       Fri, 21 May 2021 06:09:53 +0000
+Conditions:
+  Type             Status  LastHeartbeatTime                 LastTransitionTime                Reason                       Message
+  ----             ------  -----------------                 ------------------                ------                       -------
+  MemoryPressure   False   Fri, 21 May 2021 06:07:35 +0000   Fri, 21 May 2021 05:57:15 +0000   KubeletHasSufficientMemory   kubelet has sufficient memory available
+  DiskPressure     False   Fri, 21 May 2021 06:07:35 +0000   Fri, 21 May 2021 05:57:15 +0000   KubeletHasNoDiskPressure     kubelet has no disk pressure
+  PIDPressure      False   Fri, 21 May 2021 06:07:35 +0000   Fri, 21 May 2021 05:57:15 +0000   KubeletHasSufficientPID      kubelet has sufficient PID available
+  Ready            True    Fri, 21 May 2021 06:07:35 +0000   Fri, 21 May 2021 05:57:32 +0000   KubeletReady                 kubelet is posting ready status
+Addresses:
+  InternalIP:  172.31.60.232
+  Hostname:    k8s-master
+Capacity:
+  cpu:                2
+  ephemeral-storage:  104845292Ki
+  hugepages-2Mi:      0
+  memory:             8007416Ki
+  pods:               110
+Allocatable:
+  cpu:                2
+  ephemeral-storage:  96625420948
+  hugepages-2Mi:      0
+  memory:             7905016Ki
+  pods:               110
+System Info:
+  Machine ID:                 94f2661aabc24a8798578a5f484219bd
+  System UUID:                EC23657F-C2F4-F305-EABE-9FF049D1A0F4
+  Boot ID:                    38746c9f-2a31-4891-a10f-83b2b3751db0
+  Kernel Version:             3.10.0-1160.15.2.el7.x86_64
+  OS Image:                   Red Hat Enterprise Linux Server 7.9 (Maipo)
+  Operating System:           linux
+  Architecture:               amd64
+  Container Runtime Version:  docker://20.10.6
+  Kubelet Version:            v1.21.1
+  Kube-Proxy Version:         v1.21.1
+Non-terminated Pods:          (9 in total)
+  Namespace                   Name                                  CPU Requests  CPU Limits  Memory Requests  Memory Limits  Age
+  ---------                   ----                                  ------------  ----------  ---------------  -------------  ---
+  demo                        nginx-778595d664-6d7xq                100m (5%)     200m (10%)  128Mi (1%)       256Mi (3%)     12m
+  demo                        nginx-778595d664-xspl6                100m (5%)     200m (10%)  128Mi (1%)       256Mi (3%)     12m
+  kube-system                 coredns-558bd4d5db-dr6tx              100m (5%)     0 (0%)      70Mi (0%)        170Mi (2%)     12m
+  kube-system                 coredns-558bd4d5db-jmsvk              100m (5%)     0 (0%)      70Mi (0%)        170Mi (2%)     12m
+  kube-system                 etcd-k8s-master                       100m (5%)     0 (0%)      100Mi (1%)       0 (0%)         12m
+  kube-system                 kube-apiserver-k8s-master             250m (12%)    0 (0%)      0 (0%)           0 (0%)         12m
+  kube-system                 kube-controller-manager-k8s-master    200m (10%)    0 (0%)      0 (0%)           0 (0%)         12m
+  kube-system                 kube-proxy-7r6mv                      0 (0%)        0 (0%)      0 (0%)           0 (0%)         12m
+  kube-system                 kube-scheduler-k8s-master             100m (5%)     0 (0%)      0 (0%)           0 (0%)         12m
+Allocated resources:
+  (Total limits may be over 100 percent, i.e., overcommitted.)
+  Resource           Requests     Limits
+  --------           --------     ------
+  cpu                1050m (52%)  400m (20%)
+  memory             496Mi (6%)   852Mi (11%)
+  ephemeral-storage  100Mi (0%)   0 (0%)
+  hugepages-2Mi      0 (0%)       0 (0%)
+Events:
+  Type    Reason                   Age   From        Message
+  ----    ------                   ----  ----        -------
+  Normal  Starting                 12m   kubelet     Starting kubelet.
+  Normal  NodeHasSufficientMemory  12m   kubelet     Node k8s-master status is now: NodeHasSufficientMemory
+  Normal  NodeHasNoDiskPressure    12m   kubelet     Node k8s-master status is now: NodeHasNoDiskPressure
+  Normal  NodeHasSufficientPID     12m   kubelet     Node k8s-master status is now: NodeHasSufficientPID
+  Normal  NodeAllocatableEnforced  12m   kubelet     Updated Node Allocatable limit across pods
+  Normal  Starting                 12m   kube-proxy  Starting kube-proxy.
+  Normal  NodeReady                12m   kubelet     Node k8s-master status is now: NodeReady

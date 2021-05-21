@@ -1,0 +1,2 @@
+
+#*/2 * * * * /bin/bash  /home/ec2-user/sudheer/scripts/kubeout.sh && /bin/ansible-playbook /home/ec2-user/sudheer/ansible-play/mail.yml.save

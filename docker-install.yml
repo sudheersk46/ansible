@@ -1,0 +1,72 @@
+---
+- name: docker install
+  hosts: docker
+  become: true
+  become_method: sudo
+  gather_facts: yes
+
+  tasks:
+  - name: adding docker repo
+    shell: |
+           yum install -y yum-utils
+           yum-config-manager \
+           --add-repo \
+           https://download.docker.com/linux/centos/docker-ce.repo
+    register: Installout
+    when: ansible_facts["os_family"]=="RedHat"
+  - debug: var=Installout.stdout
+
+  - name: copying file
+    copy: src="{{ item }}"  dest=/tmp/
+    ignore_errors: yes
+#  with_items:
+#   - SoapUI-x64-5.4.0.sh
+#   - App*
+    with_fileglob:
+    - "~/sudheer/ansible/rpm/*"
+    register: pkgcopy
+    when: Installout.changed
+    tags: copy_files
+  - debug: var=pkgcopy
+  - name: run yum update from previously downloaded files.
+    yum:
+       name: "{{ item }}"
+       state: present
+    with_fileglob:
+    - "/tmp/*.rpm"
+    when: pkgcopy.changed
+    register: pkginstall
+  - debug: var=pkginstall
+
+  - name: Installing packages
+    shell: |
+           yum install -y wget
+           yum install docker-ce docker-ce-cli containerd.io -y
+    register: Installpkg
+    when: pkginstall.changed
+  - debug: var=Installpkg.stdout
+    when: Installpkg.changed
+
+  - name: check docker service
+    shell: ls /usr/lib/systemd/system | grep docker
+    register: dockerstat
+    ignore_errors: yes
+    when: Installpkg.changed
+  - debug: var=dockerstat
+    when: dockerstat.changed
+#  - debug: Installpkg.stdout
+#    when: Installout.changed
+
+  - name: Enable docker service
+    shell: |
+           systemctl enable --now docker
+           usermod -aG docker $(whoami)
+    register: serviceout
+    when: dockerstat.changed
+  - debug: var=serviceout.stdout
+    when: serviceout.changed
+
+
+#wget	https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.2.6-3.3.el7.x86_64.rpm
+#           rpm -ivh containerd.io-1.2.6-3.3.el7.x86_64.rpm
+

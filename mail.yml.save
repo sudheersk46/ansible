@@ -1,0 +1,22 @@
+---
+- name: Test Mail 
+  hosts: localhost
+  vars_files:
+     - /home/ec2-user/sudheer/ansible/mail.config
+
+  tasks:
+  - name: Send e-mail to a bunch of users, attaching files
+    mail:
+      host: "{{ smtphost }}"
+      port: 587
+      username: "{{ mailname }}"
+      password: "{{ pass }}"
+      to: Sudheer Kumar <arjunak.ak95@gmail.com>
+      subject: Ansible-kubernetes-report
+      attach:
+      - /home/ec2-user/sudheer/ansible/testout.txt
+    register: test
+    delegate_to: localhost
+  - debug: var=test.stdout
+
+    

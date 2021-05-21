@@ -1,0 +1,54 @@
+---
+- name: kuber uninstall
+  hosts: docker
+  become: true
+  become_method: sudo
+  gather_facts: yes
+
+
+  tasks:
+  - name: check req
+    shell: getenforce && yum repolist | grep kuber  && cat /proc/swaps
+    ignore_errors: yes
+    register: req
+  - debug: var=req
+#    when: req.stderr==""
+
+  - debug: msg="No Installation Available {{ req.stdout }} "
+    when: req.failed==true
+
+  - name: check bridge  req
+    shell: | 
+           weave reset --force
+           rm /etc/modules-load.d/k8s.conf
+           rm /etc/sysctl.d/k8s.conf
+           setenforce 1
+           rpname=$(grep -li kuber /etc/yum.repos.d/* | awk -F '/' '{print $NF}')
+           rm /etc/yum.repos.d/$rpname
+           ifconfig weave down
+           ip link delete weave
+           rm /opt/cni/bin/weave*
+           weave reset --force
+           rm /etc/cni/net.d/*
+           rm /tmp/nginx.yaml
+           kubectl drain  ip-172-31-56-188.ec2.internal --ignore-daemonsets --delete-local-data
+           kubectl delete ns demo
+           kubectl delete node ip-172-31-56-188.ec2.internal
+           kubeadm reset --force
+           weave reset --force
+           rm /usr/local/bin/weave  >> /tmp/removeout.txt
+    register: bridgestat
+    ignore_errors: yes
+    when: req.stderr==""
+  - debug: var=bridgestat
+#    when: dockerstat.changed
+
+  - name: remove kuber pacakages
+    shell: yum remove -y kubeadm kubectl kubelet --disableexcludes=kubernetes
+    args:
+     warn: false
+    register: pkgrmv
+    ignore_errors: yes
+#    when: bridgestat.rc==0
+  - debug: var=pkgrmv.stdout
+

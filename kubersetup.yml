@@ -1,0 +1,206 @@
+
+---
+- name: Configure Kubernetes cluster
+  hosts: docker
+  gather_facts: true
+  become: true
+#  vars:
+#   - master: worker
+  vars:
+     nf: |
+      net.bridge.bridge-nf-call-ip6tables = 1
+      net.bridge.bridge-nf-call-iptables = 1
+     repo: |
+           [kubernetes]
+           name=Kubernetes
+           baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
+           enabled=1
+           gpgcheck=1
+           repo_gpgcheck=1
+           gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+           exclude=kubelet kubeadm kubectl
+     yaml: ~/sudheer/ansible/nginx.yaml
+#   - slave: worker
+
+  tasks:
+  - name: Kuber bridge check
+    shell: ls /etc/modules-load.d/k8s.conf
+    ignore_errors: yes
+    register: k8bridge
+  - debug: var=k8bridge.stdout
+
+  - name: copyk8 with items
+    copy:
+     content: "{{ item.name }}"
+     dest: "/etc/{{ item.dest }}"
+    with_items:
+       - { name: 'br_netfilter', dest: '/modules-load.d/k8s.conf' }
+       - { name: "{{ nf }}" ,dest: '/sysctl.d/k8s.conf' }
+    tags: enable-bridge-network1
+    register: bridgenet0
+    when: k8bridge.stdout==""
+  - debug: var=bridgenet0.results[0].item.name
+  - debug: var=bridgenet0.results[1]
+
+
+
+  - name: sysctl  Install
+    block:
+    - name: Enabling Bridge network in Machine
+      shell:  sysctl --system
+      register: bridgenet1
+#      become_method: sudo
+      tags: enable-bridge-network
+      when:  bridgenet0.results[0].item.name=="br_netfilter" and bridgenet0.results[1].item.name=="net.bridge.bridge-nf-call-ip6tables = 1\nnet.bridge.bridge-nf-call-iptables = 1\n"
+
+    - debug: var=bridgenet1
+
+
+    - name: check bridge network
+      shell: cat /etc/sysctl.d/k8s.conf  && cat /etc/modules-load.d/k8s.conf
+      register: kbridge
+      when: bridgenet1.changed
+      tags: check-k8s.conf
+    - debug: var=kbridge
+
+
+    - name: check for Docker
+      shell: systemctl | grep  docker
+      register: dockerout
+      tags: dockerstat
+      when: kbridge.changed
+    - debug: var=dockerout
+
+    - name: enable repo
+      copy:
+       content: "{{  repo }}"
+       dest: /etc/yum.repos.d/kubernetes.repo
+      register: repos
+      when:  dockerout.rc==0
+    - debug: var=repos
+
+
+
+    - name: checking selinux  and swap
+      shell: |
+           setenforce 0
+           sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+           swapoff -a
+      register: repo
+      when: repos.dest=="/etc/yum.repos.d/kubernetes.repo"
+    - debug: var=repo
+
+    - name: check req
+      shell: getenforce && grep -il "kuber" /etc/yum.repos.d/*    && cat /proc/swaps
+      register: req
+      when: repo.rc==0
+    - debug: var=req
+
+
+    - name: kuber install
+      shell: |
+             cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
+             [kubernetes]
+             name=Kubernetes
+             baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
+             enabled=1
+             gpgcheck=1
+             repo_gpgcheck=1
+             gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+             exclude=kubelet kubeadm kubectl
+             EOF
+             yum install -y  kubeadm  --disableexcludes=kubernetes
+#             systemctl enable --now kubelet
+      args:
+       warn: false
+      register: kuberinst
+      when: req.rc==0
+    - debug: var=kuberinst
+
+    - name: kubeadm init
+      shell: |  
+             rm  -rf /home/ec2-user/.kube
+             kubeadm reset --force
+             kubeadm init 
+             mkdir /home/ec2-user/.kube
+             cp -i /etc/kubernetes/admin.conf /home/ec2-user/.kube/config
+             chown ec2-user:ec2-user /home/ec2-user/.kube/config >> /tmp/kubeadm.out
+      register: kubeadmjoin
+      ignore_errors: yes
+      when: kuberinst.rc==0 and ansible_facts['hostname'] is search("master") 
+    - debug: var=kubeadmjoin
+    
+    - name: install network plugin
+      shell: |
+             curl -L  git.io/weave -o /usr/local/bin/weave
+             chmod a+x /usr/local/bin/weave
+             /usr/local/bin/weave reset --force
+             /usr/local/bin/weave launch
+             rm /tmp/nginx.yml
+      args:
+       warn: false
+      ignore_errors: yes
+#            curl -o /tmp/weave.yaml https://cloud.weave.works/k8s/v1.8/net.yaml
+#            kubectl apply -f /tmp/weave.yaml
+      register: cni
+#      when: kubeadmjoin.rc==0 and ansible_facts['hostname'] is search("master") 
+    - debug: var=cni
+#    - name: get url
+#      get_url: url=https://deb.nodesource.com/setup_8.x dest=/opt mode=755
+ 
+    - name: check status
+      shell: kubectl taint nodes --all node-role.kubernetes.io/master- 
+      register: taintinstall
+      become_user: ec2-user
+      when: cni.changed and ansible_facts['hostname'] is search("master") 
+    - debug: var=taintinstall
+
+    - name: check cni bridge
+      shell: /usr/local/bin/weave status && ifconfig | grep weave
+      register: cnibridge
+#      when: taint-weaveinstall.changed and ansible_facts['hostname'] is search("master") 
+    - debug: var=cnibridge
+
+    - name: join cmd
+      shell: kubeadm token create --print-join-command
+      register: join
+      become_user: ec2-user
+      when: taintinstall.changed and ansible_facts['hostname'] is search("master")
+    - debug: var=join
+
+    - name: join node
+      shell: "{{ join.stdout }}"
+      register: joinnode
+      delegate_to: slavenode
+#      when:  ansible_facts['hostname'] is not search("master")
+    - debug: var=joinnode
+
+    - name: copy yaml
+      copy: 
+        src: "/home/ec2-user/sudheer/ansible/nginx.yaml"  
+        dest: /tmp/
+        remote_src: yes 
+      register: copyy
+#      delegate_to: masternode
+#      when: joinnode.changed
+    - debug: var=copyy
+     
+  
+    - name: deploy pods
+      shell: |
+             kubectl create namespace demo
+             kubectl label nodes k8s-master dedicated=master
+             kubectl apply -f /tmp/nginx.yaml 
+      when: copyy.changed
+      become_user: ec2-user
+      register: deploy
+#      delegate_to: masternode
+
+    
+    - name: run scripts in cron 
+      shell: kubectl get pods -A
+      register: test
+      become_user: ec2-user
+      when: deploy.changed
+#      delegate_to: masternode
+    - debug: var=test

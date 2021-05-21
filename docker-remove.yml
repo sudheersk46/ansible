@@ -1,0 +1,44 @@
+---
+- name: docker remove
+  hosts: localhost
+  become: true
+  become_method: sudo
+  gather_facts: yes
+
+  tasks:
+  - name: Check Docker repo
+    shell: yum repolist | grep docker
+    args:
+     warn: false
+    ignore_errors: yes
+    register: dockerrepo
+    when: ansible_facts["os_family"]=="RedHat"
+  - debug: var=dockerrepo
+
+  - name: Check Docker service
+    shell: systemctl | grep docker
+    args:
+     warn: false
+    ignore_errors: yes
+    register: dockerserv
+    when: dockerrepo.rc==0
+  - debug: var=dockerserv
+
+
+  - name: Uninstalling docker
+    shell: |
+           dckrp=$(grep -li docker /etc/yum.repos.d/*.repo | awk -F '/' '{print $NF}')
+           rm /etc/yum.repos.d/$dckrp
+           systemctl stop docker
+           yum remove docker-ce docker-ce-cli containerd.io -y
+           rm -rf /var/lib/docker
+           rm -rf /var/lib/containerd
+           rm -rf /etc/docker
+           ifconfig dokcer0 down
+           ip link delete docker0
+    register: removedock
+    when: dockerserv.changed
+  - debug: var=removedock
+  - debug: msg="docker removed"
+
+

@@ -1,0 +1,193 @@
+
+---
+- name: docker install
+  hosts: localhost
+  become: true
+  become_method: sudo
+  gather_facts: yes
+
+
+  tasks:
+  - name: check req
+    shell: getenforce && yum repolist | grep kuber  && cat /proc/swaps
+    ignore_errors: yes
+    register: req
+  - debug: var=req
+#    when: req.stderr==""
+
+  - debug: msg="No Installation Available {{ req.stdout }} "
+    when: req.failed==true
+
+  - name: check bridge  req
+    shell: |
+           rm /etc/modules-load.d/k8s.conf
+           rm /etc/sysctl.d/k8s.conf
+           setenforce 1
+           rpname=$(grep -li kuber /etc/yum.repos.d/* | awk -F '/' '{print $NF}')
+           rm /etc/yum.repos.d/$rpname
+    register: bridgestat
+    ignore_errors: yes
+    when: req.stderr==""
+  - debug: var=bridgestat
+#    when: dockerstat.changed
+
+  - name: remove kuber pacakages
+    shell: yum remove -y kubeadm kubectl kubelet --disableexcludes=kubernetes
+    args:
+     warn: yes
+    register: pkgrmv
+    when: bridgestat.rc==0
+  - debug: var=pkgrmv.stdout
+
+## when: ('Disabled in req.stdout' and 'kubernetes in req.stdout') or
+##           ('Permissive  in req' and kubernetes in req.stdout')
+
+[ec2-user@master ansible-play]$ cat kubersetup
+kubersetup-remove.yml  kubersetup.yml         
+[ec2-user@master ansible-play]$ cat kubersetup.yml 
+---
+- name: Configure Kubernetes cluster
+  hosts: localhost
+  gather_facts: true
+  become: true
+#  vars:
+#   - master: worker
+  vars:
+     nf: |
+      net.bridge.bridge-nf-call-ip6tables = 1
+      net.bridge.bridge-nf-call-iptables = 1
+     repo: |
+           [kubernetes]
+           name=Kubernetes
+           baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
+           enabled=1
+           gpgcheck=1
+           repo_gpgcheck=1
+           gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+           exclude=kubelet kubeadm kubectl
+
+#   - slave: worker
+
+  tasks:
+  - name: Kuber bridge check
+    shell: ls /etc/modules-load.d/k8s.conf
+    ignore_errors: yes
+    register: k8bridge
+  - debug: var=k8bridge.stdout
+
+  - name: copyk8 with items
+    copy:
+     content: "{{ item.name }}"
+     dest: "/etc/{{ item.dest }}"
+    with_items:
+       - { name: 'br_netfilter', dest: '/modules-load.d/k8s.conf' }
+       - { name: "{{ nf }}" ,dest: '/sysctl.d/k8s.conf' }
+    tags: enable-bridge-network1
+    register: bridgenet0
+    when: k8bridge.stdout==""
+  - debug: var=bridgenet0.results[0].item.name
+  - debug: var=bridgenet0.results[1]
+
+
+
+  - name: sysctl  Install
+    block:
+    - name: Enabling Bridge network in Machine
+      shell:  sysctl --system
+      register: bridgenet1
+#      become_method: sudo
+      tags: enable-bridge-network
+      when:  bridgenet0.results[0].item.name=="br_netfilter" and bridgenet0.results[1].item.name=="net.bridge.bridge-nf-call-ip6tables = 1\nnet.bridge.bridge-nf-call-iptables = 1\n"
+
+    - debug: var=bridgenet1
+
+
+    - name: check bridge network
+      shell: cat /etc/sysctl.d/k8s.conf  && cat /etc/modules-load.d/k8s.conf
+      register: kbridge
+      when: bridgenet1.changed
+      tags: check-k8s.conf
+    - debug: var=kbridge
+
+
+    - name: check for Docker
+      shell: systemctl | grep  docker
+      register: dockerout
+      tags: dockerstat
+      when: kbridge.changed
+    - debug: var=dockerout
+
+    - name: enable repo
+      copy:
+       content: "{{  repo }}"
+       dest: /etc/yum.repos.d/kubernetes.repo
+      register: repos
+      when:  dockerout.rc==0
+    - debug: var=repos
+
+
+
+    - name: checking selinux  and swap
+      shell: |
+           setenforce 0
+           sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+           swapoff -a
+      register: repo
+      when: repos.dest=="/etc/yum.repos.d/kubernetes.repo"
+    - debug: var=repo
+
+    - name: check req
+      shell: getenforce && yum repolist | grep kuber  && cat /proc/swaps
+      register: req
+      when: repo.rc==0
+    - debug: var=req
+
+
+    - name: kuber install
+      shell: |
+             cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
+             [kubernetes]
+             name=Kubernetes
+             baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
+             enabled=1
+             gpgcheck=1
+             repo_gpgcheck=1
+             gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+             exclude=kubelet kubeadm kubectl
+             EOF
+             yum install -y  kubeadm  --disableexcludes=kubernetes
+#             systemctl enable --now kubelet
+      args:
+       warn: false
+      register: kuberinst
+      when: req.rc==0
+    - debug: var=kuberinst
+
+    - name: kubeadm init
+      shell: kubeadm init
+      register: kubeadmjoin
+      when: kuberinst.rc==0 and   ansible_facts['hostname'] is search("master") 
+    - debug: var=kubeadmjoin
+    
+    - name: install network plugin
+      shell: kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d 'n')"
+      register: cni
+      when: kubeadmjoin.rc==0 and   ansible_facts['hostname'] is search("master") 
+    - debug: var=cni
+ 
+    - name: check status
+      shell:  |
+               kubectl taint nodes --all node-role.kubernetes.io/master- 
+               curl -L git.io/weave -o /usr/local/bin/weave 
+               ifconfig | grep weave
+      register: taint-weaveinstall
+      when: cni.changed and and   ansible_facts['hostname'] is search("master") 
+    - debug: var=taint-weaveinstall
+
+    - name: check cni bridge
+      shell: weave status && ifconfig | grep weave
+      regsiter: cnibridge
+      when: taint-weaveinstall.changed and   ansible_facts['hostname'] is search("master") 
+    - debug: var=cnibridge
+
+

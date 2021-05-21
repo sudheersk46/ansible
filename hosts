@@ -1,0 +1,9 @@
+[docker]
+masternode
+slavenode
+
+[docker:vars]
+#ansible_become=true
+#ansible_become_method=sudo
+ansible_remote_user=ec2-user
+ansible_host_key_checking=false

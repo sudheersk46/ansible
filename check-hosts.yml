@@ -1,0 +1,23 @@
+---
+- name: fact check
+  hosts: docker
+  become: true
+  become_method: sudo
+  gather_facts: yes
+
+  tasks:
+  - name: Check ls
+    shell: cat /etc/hosts
+    args:
+     warn: false
+    ignore_errors: yes
+    register: lsrepo
+    when: (ansible_facts['os_family']=="RedHat" and   ansible_facts['hostname'] is not search("master"))
+#  - debug: var=lsrepo
+#  - debug: var=ansible_facts['hostname']
+#  - debug: msg="{{ hostvars['slavenode']['lsrepo'] }}"
+  - debug: var=lsrepo
+    delegate_to: slavenode 
+#ansible_facts['hostname'].find("master'")==0)
+
+#ansible_facts['hostname'].f=="k8s-master")
