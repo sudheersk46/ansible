@@ -1,0 +1,36 @@
+---
+
+- name:   Replace authpriv for wazuh
+  ansible.builtin.replace:
+    path: /etc/rsyslog.conf
+    regexp: "^{{ insert_after_3 }}"
+    replace: "#{{ insert }}"
+  register: rsyslog_1
+
+- name: Configure authpriv for wazuh
+  ansible.builtin.replace:
+    path: /etc/rsyslog.conf
+    regexp: '^{{ authpriv }}$'
+    replace: '#{{ insert_after_2 }}'
+  register: rsyslog_2
+
+- name:  Add Rsyslog syntax template for wazuh
+  ansible.builtin.replace:
+    path: /etc/rsyslog.conf
+    regexp: '^{{ rsyslogtemplate }}'
+    replace: '#{{ rsyslogtemplate_dst }}'
+  register: rsyslog_3
+
+- name: Copy shared Rsyslog conf
+  copy:
+    src: "05_syslog.conf"
+    dest: /etc/rsyslog.d/05__syslog.conf
+    mode: 0644
+    owner: root
+    backup: yes
+  when: ( rsyslog_1.changed or (rsyslog_2.changed and rsyslog_3.changed) or rsyslog_2.changed )
+
+  notify: restart rsyslog
+  tags:
+    - rsyslog_conf
+
