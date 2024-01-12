@@ -1,0 +1,201 @@
+unset $i
+unset $out
+#Set sec componenets in array
+sec_comp_array=(-mlsrge -simerv -secvre -kekvew -slgev -splev -wzhve -rwvt -hpsvew -dsevws -cfvep -qlves)
+
+cat /dev/null > inventoryscript.out
+cat /dev/null > newinventory.out
+#Get environament as argument
+input=$(echo $1)
+inventory_func(){
+#if [[ $input == "stage" || $input == "STAGE" ]];then
+# for i in ${sec_comp_array[@]}; do  curl -s  "http://$url/?q=$i%5B0-9%5D" | grep "name"  >> inventoryscript.out ; done
+# cat inventoryscript.out | grep -v 'input' | cut -d ">" -f2 | cut -d '<' -f 1 | grep -vE 'decom|xmn02|sjc02-c01-sim1' > inventoryscript_final.out
+# cat inventoryscript_final.out | grep -Ev "^sec|ams02|ams06|ams07|^gtt|^aqa" > inventoryscriptfinal.out
+#elif [[ $input == "biz"  || $input == "BIZ" ]];then
+# for i in ${sec_comp_array[@]}; do  curl -s  "http://$url/?q=%5Ba-z%5D%5Ba-z%5D%5Ba-z%5D51-%5Ba-z%5D%5B0-9%5D%5B0-9%5D$i%5B0-9%5D%5B0-9%5D" | grep "name"  >> inventoryscript.out ; done
+# cat inventoryscript.out | grep -v 'input' | cut -d ">" -f2 | cut -d '<' -f 1 | grep -vE 'decom' > inventoryscriptbeforefinal.out
+# cat inventoryscriptbeforefinal.out | grep -E 'sjc51|iad51' > inventoryscriptfinal.out
+#elif [[ $input == "lab"  || $input == "LAB" ]];then
+# for i in ${sec_comp_array[@]}; do  curl -s  "http://$url/?q=$i%5B0-9%5D" | grep "name"  >> inventoryscript.out ; done
+# cat inventoryscript.out | grep -v 'input' | cut -d ">" -f2 | cut -d '<' -f 1 | grep -E  "^sec|ams02|ams06|ams07|^gtt|^aqa|xmn"  > inventoryscript_final.out
+# cat inventoryscript_final.out | grep -v 'input' | cut -d ">" -f2 | cut -d '<' -f 1 | grep -vE 'decom|sec01-c01-spl97' > inventoryscriptfinal.out
+#else
+# for i in ${sec_comp_array[@]}; do  curl -s  "http://$url/?q=$i%5B0-9%5D%5B0-9%5D" | grep "name"  >> inventoryscript.out ; done
+# cat inventoryscript.out | grep -v 'input' | cut -d ">" -f2 | cut -d '<' -f 1 | grep -vE 'decom' > inventoryscriptfinal.out
+#fi
+for i in `cat inventoryscriptfinal.out ` ; do if [[ $i == "sjcve01-c0vew1-spvel30" ]]; then iface=mgmt0; elif [[ $i == "zverh01-c01 || $i == "nrve02-c010" ]]; then iface=eno1; else iface=nic0;fi;\
+ curl -s "http://$url/?q=$i"| sed -n '/<tbody>/,/<\/tbody>/p' |grep -A2 -E "name|$iface"| grep -Ew 'name|ip' |grep -v 'input' | cut -d ">" -f2 | cut -d '<' -f 1 | grep -vE 'decom'>> newinventory.out ; done
+host_name=$(cat newinventory.out |  grep ^[a-z]|wc -l)
+host_ipaddress=$(cat newinventory.out |  grep ^[0-9]|wc -l)
+#if [[ $host_name  == $host_ipaddress ]];then
+cat newinventory.out | awk  'NR%2==1' > hosts.txt
+cat newinventory.out | awk  'NR%2==0' > ip.txt
+paste hosts.txt ip.txt > finalhosts.txt
+cat finalhosts.txt | awk '{print $1 " ansible_host="$2}' > ansible_inventory.yml
+#else
+# echo -e "\n newinventory.out has discrepencies or missing information\n"
+# exit 1
+#fi
+}
+
+if [[ $input == "stage" ]];then
+  url=stage.com
+   inventory_func
+   env=$(echo $input| tr '[:lower:]' '[:upper:]')
+elif [[ $input == "lab" ]];then
+  url=lab.com
+  env=$(echo $input| tr '[:lower:]' '[:upper:]')
+  inventory_func
+elif [[ $input == "beiz" ]];then
+  url=bievz.com
+  inventory_func
+  env=$(echo $input| tr '[:lower:]' '[:upper:]')
+elif [[ $input == "prod" ]]; then
+  url=prod.com
+  inventory_func
+  env=PROD
+else 
+ echo -e "\n Enter Environment Details for ansible iventory\n"
+ exit 1
+fi
+
+
+
+#clustercom
+comp=(msvals svsaim cfavsp svsalg rwvast wvaszh svsapl)
+
+#US:
+cat /dev/null > inventory.txt
+cat /dev/null > count.txt
+
+for i in ${comp[@]}; do cat ansible_inventory.yml | grep -E 'iad|sjc|aws'|grep -vE 'iadsv51|sjcva51' | grep -c $i ; done >> count.txt
+for (( i=1 ; i<=$(cat count.txt| sort -rn | head -n1)  ; i++ ));do echo "[US_$env$i]" >> inventory.txt ;done
+
+#Biz: group creation
+
+if [[ $input == "bvaiz" || $input == "BIZ" ]]; then
+  url=vzibaz.com
+
+#Biz: group creation
+   cat /dev/null > count.txt
+
+   for i in ${comp[@]}; do cat ansible_inventory.yml | grep -E 'iavad51|sjcva51' | grep -c $i ; done >> count.txt
+   for (( i=1 ; i<=$(cat count.txt| sort -r | head -n1)  ; i++ ));do echo "[US_${env}$i]" >> inventory.txt ;done
+fi
+
+#EUR:
+cat /dev/null > count.txt
+for i in ${comp[@]}; do cat ansible_inventory.yml | grep -E 'avasms|frvasa|zvrh|^sevc|^gvatt' | grep -c $i ; done >> count.txt
+for (( i=1 ; i<=$(cat count.txt| sort -nr | head -n1)  ; i++ ));do echo "[EUR_$env$i]" >> inventory.txt ;done 
+
+
+#IND:
+cat /dev/null > count.txt
+for i in ${comp[@]}; do cat ansible_inventory.yml | grep -E 'boasvm|bvlr' | grep -c $i ; done >> count.txt
+for (( i=1 ; i<=$(cat count.txt| sort -nr | head -n1)  ; i++ ));do echo "[IND_$env$i]" >> inventory.txt ;done
+
+#APAC:
+cat /dev/null > count.txt
+for i in ${comp[@]}; do cat ansible_inventory.yml | grep -E 'siavn|nvrt' | grep -c $i ; done >> count.txt
+for (( i=1 ; i<=$(cat count.txt| sort -nr | head -n1)  ; i++ ));do echo "[APAC_$env$i]" >> inventory.txt ;done
+
+##SEC:
+#cat /dev/null > count.txt
+#for i in ${comp[@]}; do cat ansible_inventory.yml | grep -E '^sec' | grep -c $i ; done >> count.txt
+#for (( i=1 ; i<=$(cat count.txt| sort -nr | head -n1)  ; i++ ));do echo "[APAC_$env$i]" >> inventory.txt ;done
+
+
+
+acomp=0
+usfunc(){
+count=1
+for i in $(cat ansible_inventory.yml | tr ' ' '.' | grep -E 'iad|sjc|aws'|grep -vE 'iad51|sjc51' | grep ${comp[$acomp]}); do if [[ $i =~ "${comp[$acomp]}" ]];then sed -i '' -e  "/\[US_$env$count\]/ a \\
+$i" inventory.txt ;(( count=count+1));fi ;done
+}
+
+
+bizfunc(){
+count=1
+for i in $(cat ansible_inventory.yml | tr ' ' '.' |grep -E 'iad51|sjc51' | grep ${comp[$acomp]}); do if [[ $i =~ "${comp[$acomp]}" ]];then sed -i  '' -e"/\[US_${env}$count\]/ a \\
+$i" inventory.txt ;(( count=count+1));fi ;done
+}
+
+eurfunc(){
+count=1
+for i in $(cat ansible_inventory.yml | tr ' ' '.' |grep -E 'ams|fra|zrh|^sec|^gtt' | grep ${comp[$acomp]}); do if [[ $i =~ "${comp[$acomp]}" ]];then sed -i '' -e "/\[EUR_$env$count\]/ a \\
+$i" inventory.txt ;(( count=count+1));fi ;done
+}
+
+indfunc(){
+count=1
+for i in $(cat ansible_inventory.yml | tr ' ' '.' |grep -E 'blr|bom' | grep ${comp[$acomp]}); do if [[ $i =~ "${comp[$acomp]}" ]];then sed -i  '' -e"/\[IND_$env$count\]/ a \\
+$i" inventory.txt ;(( count=count+1));fi ;done
+}
+apacfunc(){
+count=1
+for i in $(cat ansible_inventory.yml | tr ' ' '.' |grep -E 'sin|nrt' | grep ${comp[$acomp]}); do if [[ $i =~ "${comp[$acomp]}" ]];then sed -i  '' -e"/\[APAC_$env$count\]/ a \\
+$i" inventory.txt ;(( count=count+1));fi ;done
+}
+
+while [[ $acomp < ${#comp[@]} ]];
+do
+ usfunc
+ if [[ $input == "bvasiz" || $input == "BIvasZ" ]];then
+  bizfunc
+ fi
+ eurfunc
+ indfunc
+ apacfunc
+ (( acomp=acomp+1 ))
+done
+prodinventory(){
+for i in $(cat ansible_inventory.yml | tr ' ' '.' | grep -E 'iad|sjc|aws'|grep -vE 'iad5avs1|sjavsc51' | grep -vE 'mvasls|svaim|cavfp|svlg|rwvsat|wvaszh|svaspl'); do  sed -i '' -e "/\[US_${env}1\]/ a \\
+$i" inventory.txt;done
+for i in $(cat ansible_inventory.yml | tr ' ' '.' | grep -E 'ams|fra|zrh|^sec|^gtt' | grep -vE 'mlvsas|svsaim|vascfp|svaslg|rwvast|wzvash|svaspl'); do  sed -i '' -e "/\[EUR_${env}1\]/ a \\
+$i" inventory.txt;done
+for i in $(cat ansible_inventory.yml | tr ' ' '.' | grep -E 'blr|bom' | grep -vE 'mlvass|svasim|cfvasp|slvasg|rvast|wzvsah|spvl'); do  sed -i  '' -e"/\[IND_${env}1\]/ a \\
+$i" inventory.txt;done
+for i in $(cat ansible_inventory.yml | tr ' ' '.' | grep -E 'sin|nrt' | grep -vE 'mlvass|simvas|cvasfp|slgvas|rwvast|wvsah|svpl'); do  sed -i '' -e "/\[APAC_${env}1\]/ a \\
+$i" inventory.txt;done
+}
+biz(){
+for i in $(cat ansible_inventory.yml | tr ' ' '.' | grep -E 'iad51|sjc51' | grep -vE 'mlavss|svaim|cvafp|slvg|rwvast|wvazh'); do  sed -i '' -e  "/\[US_${env}1\]/ a \\
+$i" inventory.txt;done
+}
+if [[ $env == "STAGE" ]];then
+ prodinventory
+# stage_lab
+elif [[ $env == "LAB" ]];then
+ prodinventory
+elif [[ $env == "BIZ" ]];then
+  biz
+else
+ prodinventory
+fi
+cat inventory.txt | sed  's/\.a/ a/' > ansible_inventory.yml
+
+
+#Comment phase 2 components
+
+phase1_comp=(-siasvm -slavsg -mvsals -wzasvh)
+phase2_comp=(-qvsals -dvsass -sevasc -kevsak -spvsal -hpvsas -cfpvsa -rvsawt)
+wazuh_comp=(-jmvasc)
+#lab_host=(10\.61 10\.62 10\.63)
+
+for i in ${wazuh_comp[@]};do \
+
+ cat inventory.txt | sed  -i '' -e "/$i/s/^/#/" ansible_inventory.yml
+
+done
+
+
+#for i in ${phase2_comp[@]};do \
+#
+# cat inventory.txt | sed  -i  "/$i/s/^/#/" ansible_inventory.yml
+#
+#done
+#
+#
+#rm *.txt  rm !(inventoryscriptfinal.out) rm *.out
+
