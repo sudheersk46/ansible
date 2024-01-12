@@ -1,0 +1,43 @@
+---
+- name: <ops_wazuh> Install Wazuh agent
+  yum:
+    name: "wazuh-agent-{{ agent_version }}"
+    state: installed
+    allow_downgrade: yes
+    enablerepo: '*'
+
+- name: <ops_wazuh> Configure Wazuh agent
+  template:
+    src: "ossec.conf.j2"
+    dest: "/var/ossec/etc/ossec.conf"
+    owner: wazuh
+    group: wazuh
+  notify:
+    - restart wazuh-agent
+  tags:
+    - wazuh_conf
+
+- name: <ops_wazuh> Start Wazuh agent
+  systemd:
+    name: wazuh-agent
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+#- name: Copy shared Rsyslog conf
+#  copy:
+#    src: "rsyslog.conf"
+#    dest: /etc/rsyslog.conf
+#    mode: 0644
+#    owner: root
+#    backup: yes
+#  notify: restart rsyslog
+#  tags:
+#    - rsyslog_conf
+
+- name: <ops_wazuh> Start rsyslog
+  systemd:
+    name: rsyslog
+    state: started
+    enabled: yes
+    daemon_reload: yes
