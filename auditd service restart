@@ -1,0 +1,15 @@
+ vi /usr/lib/systemd/system/auditd.service
+Set line 14 to no
+systemctl daemon-reload
+systemctl restart auditd
+systemctl status auditd
+
+
+After activity
+
+Revert changes 
+ vi /usr/lib/systemd/system/auditd.service
+Set line 14 to yes
+systemctl daemon-reload
+systemctl restart auditd
+systemctl status auditd
