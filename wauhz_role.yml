@@ -1,0 +1,24 @@
+---
+
+- name: Install/update wazuh agent
+
+  hosts: wazuh_patch
+#  serial: 1
+
+
+
+  tasks:
+
+    - name: Include  ops_wazuh
+
+      include_role:
+
+        name: "{{ role_name }}"
+
+      loop:
+
+        - ops_wazuh
+
+      loop_control:
+
+        loop_var: role_name
