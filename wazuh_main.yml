@@ -1,0 +1,15 @@
+---
+- include: install_wazuh.yml
+  when: wazuh_manager_ip is defined
+  tags:
+    - wazuh
+
+- include: wazuh_rsyslog.yml
+  when: wazuh_manager_ip is defined
+  tags:
+    - rsyslog
+
+#Note when condintion will work still is value is null
+instead use
+
+when: wazuh_manager_ip| length > 0 
